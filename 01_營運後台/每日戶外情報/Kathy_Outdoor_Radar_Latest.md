@@ -1,6 +1,6 @@
 # Kathy Outdoor Radar 最新摘要
 
-更新時間：2026-07-02 10:53（台北時間；雲端公開來源版）  
+更新時間：2026-07-02 10:56（台北時間；雲端公開來源版）  
 HTML 固定頁面：`Kathy_Outdoor_Radar.html`
 
 本版可由 GitHub Actions 在雲端排程產生，不依賴 Kathy 的 Mac 是否醒著。網站來源每日收當日新文章；IG 每個帳號列最新非置頂貼文。
