@@ -1,6 +1,6 @@
 # Kathy Outdoor Radar 最新摘要
 
-更新時間：2026-07-02 10:35（台北時間；雲端公開來源版）  
+更新時間：2026-07-02 10:38（台北時間；雲端公開來源版）  
 HTML 固定頁面：`Kathy_Outdoor_Radar.html`
 
 本版可由 GitHub Actions 在雲端排程產生，不依賴 Kathy 的 Mac 是否醒著。網站來源每日收當日新文章；IG 每個帳號列最新非置頂貼文。
@@ -11,6 +11,7 @@ HTML 固定頁面：`Kathy_Outdoor_Radar.html`
 - 待更新｜[今日暫無可公開確認的新文章](https://www.outsiders.com.tw/)：今天 RSS 內沒有抓到當日發布的新文章。
 
 ### GQ Taiwan
+- 2026/07/02｜[台北車站的城市綠洲！「PORTRAIT 鉑萃酒店」絕美露台房型、全新日法鐵板料理餐廳，2026 夏季正式開幕](https://www.gq.com.tw/article/台北車站的城市綠洲portrait-鉑萃酒店)：北車全新高質感飯店「PORTRAIT 鉑萃酒店」，預計將於 2026 年夏季正式亮相！
 - 2026/07/02｜[F1 車手 Pierre Gasly 親自上陣！Alpine × Lacoste 聯名鱷魚跑車 A290 Rallye，全車暗藏 290 隻鱷魚彩蛋](https://www.gq.com.tw/article/f1-pierre-gasly-alpine-lacoste-a290-rallye)：兩大法國工藝代表品牌 Alpine 與 Lacoste 攜手推出特別版賽車「Alpine A290 Rallye」。
 - 2026/07/02｜[哈蘭德球衣為何改名「Braut Haaland」？致敬母親姓氏，原來全家都是頂尖運動員！](https://www.gq.com.tw/article/哈蘭德球衣)：哈蘭德球衣致敬母親 Gry Marita Braut，踏入足壇就是因為她！
 
