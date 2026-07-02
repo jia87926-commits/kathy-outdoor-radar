@@ -506,9 +506,22 @@ def instagram_status(post_time: datetime | None, now: datetime) -> str:
     return "最新貼文較舊"
 
 
+def is_instagram_pinned(item: dict) -> bool:
+    return bool(item.get("timeline_pinned_user_ids") or item.get("clips_tab_pinned_user_ids"))
+
+
+def select_latest_instagram_item(items: list[dict]) -> dict | None:
+    candidates = [item for item in items if not is_instagram_pinned(item)]
+    candidates = candidates or items
+    candidates = [item for item in candidates if item.get("taken_at") is not None]
+    if not candidates:
+        return items[0] if items else None
+    return max(candidates, key=lambda item: int(item.get("taken_at") or 0))
+
+
 def fetch_instagram_latest(account: str, url: str, angle: str, now: datetime) -> InstagramPost:
     username = instagram_username(url)
-    api_url = f"https://www.instagram.com/api/v1/feed/user/{urllib.parse.quote(username)}/username/?count=6"
+    api_url = f"https://www.instagram.com/api/v1/feed/user/{urllib.parse.quote(username)}/username/?count=18"
     headers = {
         "x-ig-app-id": "936619743392459",
         "x-asbd-id": "129477",
@@ -517,16 +530,8 @@ def fetch_instagram_latest(account: str, url: str, angle: str, now: datetime) ->
     }
     try:
         data = json.loads(fetch_text(api_url, timeout=18, headers=headers))
-        pinned = {str(value) for value in (data.get("pinned_profile_grid_items_ids") or [])}
         items = data.get("items") or []
-        selected = None
-        for item in items:
-            item_ids = {str(item.get("pk") or ""), str(item.get("id") or "")}
-            if pinned.intersection(item_ids):
-                continue
-            selected = item
-            break
-        selected = selected or (items[0] if items else None)
+        selected = select_latest_instagram_item(items)
         if not selected:
             raise ValueError("公開 API 沒有回傳貼文")
 
