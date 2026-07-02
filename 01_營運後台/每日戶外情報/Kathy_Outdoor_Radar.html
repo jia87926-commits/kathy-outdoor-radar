@@ -1,0 +1,497 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="referrer" content="no-referrer">
+  <title>Kathy Outdoor Radar</title>
+  <style>
+    :root {
+      --text: #111111;
+      --muted: #666666;
+      --line: #dddddd;
+      --soft: #f7f7f7;
+      --green: #e7f2e8;
+      --blue: #e8f0f7;
+      --rose: #f6e8ea;
+      --yellow: #f6f0dc;
+      --violet: #eee9f7;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: #ffffff; color: var(--text); font-family: -apple-system, BlinkMacSystemFont, "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif; }
+    a { color: inherit; }
+    .page-shell { max-width: 1180px; margin: 0 auto; padding: 18px; }
+    .topbar { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 14px 0 18px; border-bottom: 1px solid var(--line); position: sticky; top: 0; background: rgba(255,255,255,.96); z-index: 5; }
+    .brand { display: inline-flex; align-items: center; gap: 10px; font-weight: 800; text-decoration: none; letter-spacing: .02em; }
+    .brand-mark { display: grid; place-items: center; width: 28px; height: 28px; border: 1px solid var(--text); font-size: 14px; }
+    .nav { display: flex; gap: 12px; flex-wrap: wrap; font-size: 13px; color: var(--muted); }
+    .nav a { text-decoration: none; }
+    .section { padding: 22px 0; }
+    .filter-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; }
+    button, .source-link { border: 1px solid var(--text); background: #fff; color: var(--text); min-height: 34px; padding: 7px 11px; border-radius: 6px; font-size: 13px; text-decoration: none; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; }
+    .filter-button[data-filter="outsiders"] { background: var(--green); }
+    .filter-button[data-filter="gq"] { background: var(--blue); }
+    .filter-button[data-filter="hiking"] { background: var(--yellow); }
+    .filter-button[data-filter="running"] { background: var(--rose); }
+    .filter-button[data-filter="material"] { background: var(--violet); }
+    .filter-button[aria-pressed="true"], .source-link { background: #111; color: #fff; }
+    .notice { margin: 0 0 18px; padding: 12px 14px; border: 1px solid var(--line); border-radius: 6px; color: var(--muted); line-height: 1.7; }
+    .source-panel { border-top: 1px solid var(--line); padding: 22px 0; }
+    .source-panel[hidden] { display: none; }
+    .source-panel-header { display: grid; grid-template-columns: minmax(220px, .34fr) 1fr; gap: 22px; align-items: start; margin-bottom: 16px; }
+    .source-panel-header h3 { margin: 2px 0 10px; font-size: clamp(26px, 4vw, 48px); line-height: .95; letter-spacing: 0; }
+    .source-panel-header p { margin: 0; color: var(--muted); line-height: 1.7; }
+    .eyebrow { text-transform: uppercase; letter-spacing: .08em; font-size: 12px; color: var(--muted); }
+    .source-meta, .meta-row, .card-actions { display: flex; flex-wrap: wrap; gap: 6px; }
+    .pill { display: inline-flex; align-items: center; min-height: 24px; padding: 3px 8px; border: 1px solid var(--line); border-radius: 999px; font-size: 12px; color: var(--muted); background: #fff; }
+    .source-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+    .article-card { border: 1px solid var(--line); border-radius: 8px; overflow: hidden; background: #fff; display: grid; grid-template-columns: minmax(180px, .42fr) 1fr; min-height: 250px; }
+    .article-image { background: var(--soft); min-height: 220px; }
+    .article-image img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .article-image-empty { display: grid; place-items: center; color: #aaa; font-weight: 700; }
+    .article-body { padding: 16px; display: flex; flex-direction: column; gap: 10px; }
+    h4 { margin: 0; font-size: 20px; line-height: 1.25; }
+    p { margin: 0; line-height: 1.65; color: var(--muted); }
+    .use-case { border-top: 1px solid var(--line); padding-top: 10px; color: var(--muted); line-height: 1.55; font-size: 14px; }
+    .use-case strong { color: var(--text); margin-right: 6px; }
+    .feedback-button[data-action="like"] { background: var(--rose); }
+    .feedback-button[data-action="useful"] { background: var(--green); }
+    .feedback-button[data-action="product"] { background: var(--yellow); }
+    .feedback-button[data-action="post"] { background: var(--blue); }
+    .feedback-button[data-action="irrelevant"] { background: #f0f0f0; color: #555; }
+    .account-grid { display: grid; gap: 12px; }
+    .account-card { border: 1px solid var(--line); border-radius: 8px; padding: 14px; display: grid; grid-template-columns: 58px minmax(0, 1fr) minmax(180px, .35fr) auto; gap: 14px; align-items: start; }
+    .avatar-fallback { width: 48px; height: 48px; border: 1px solid var(--text); border-radius: 50%; display: grid; place-items: center; font-weight: 800; }
+    .feedback-panel { border: 1px solid var(--line); border-radius: 8px; padding: 16px; }
+    .toast { position: fixed; right: 16px; bottom: 16px; background: #111; color: #fff; padding: 10px 12px; border-radius: 6px; opacity: 0; transform: translateY(8px); transition: .2s ease; }
+    .toast[data-show="true"] { opacity: 1; transform: translateY(0); }
+    @media (max-width: 880px) {
+      .source-panel-header, .article-card, .account-card { grid-template-columns: 1fr; }
+      .source-grid { grid-template-columns: 1fr; }
+      .topbar { position: static; align-items: flex-start; flex-direction: column; }
+      .article-image { min-height: 210px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page-shell">
+    <header class="topbar">
+      <a class="brand" href="#feed"><span class="brand-mark">K</span><span>Kathy Outdoor Radar</span></a>
+      <nav class="nav" aria-label="頁面導覽">
+        <a href="#feed">Articles</a>
+        <a href="#accounts">Accounts</a>
+        <a href="#feedback">Feedback</a>
+      </nav>
+    </header>
+    <main>
+      <section class="section" id="feed">
+        <div class="filter-row" role="toolbar" aria-label="來源篩選"><button class="filter-button" type="button" data-filter="all" aria-pressed="true">全部來源</button>
+<button class="filter-button" type="button" data-filter="outsiders" aria-pressed="false">OUTSiDERS</button>
+<button class="filter-button" type="button" data-filter="gq" aria-pressed="false">GQ Taiwan</button>
+<button class="filter-button" type="button" data-filter="hiking" aria-pressed="false">健行筆記</button>
+<button class="filter-button" type="button" data-filter="running" aria-pressed="false">運動筆記</button>
+<button class="filter-button" type="button" data-filter="likeshop" aria-pressed="false">GQ LikeShop</button>
+<button class="filter-button" type="button" data-filter="material" aria-pressed="false">材質 / 規範</button>
+<button class="filter-button" type="button" data-filter="accounts" aria-pressed="false">IG 帳號</button></div>
+        <p class="notice">更新時間：2026/07/02 09:59（台北時間）。雲端版只抓公開可驗證來源；IG 不保存登入資料，無法確認日期時只保留帳號入口，不把舊貼文寫成今日最新。</p>
+        <div class="source-feed">
+          <section class="source-panel" data-source="outsiders">
+            <div class="source-panel-header">
+              <div>
+                <p class="eyebrow">Source</p>
+                <h3>OUTSiDERS</h3>
+                <div class="source-meta"><span class="pill">戶外文化</span><span class="pill">機能品牌</span><span class="pill">男女皆可</span></div>
+              </div>
+              <p>戶外文化、戶外產業、機能品牌與台灣山林議題。</p>
+            </div>
+            <div class="source-grid">
+              <article class="article-card" data-id="outsiders-fallback" data-title="本週暫無可公開確認的新訊" data-tags="OUTSiDERS,待確認">
+                <div class="article-image article-image-empty"><span>NO IMAGE</span></div>
+                <div class="article-body">
+                  <div class="meta-row"><span class="pill">OUTSiDERS</span><span class="pill">待更新</span><span class="pill">OUTSiDERS</span><span class="pill">待確認</span></div>
+                  <h4>本週暫無可公開確認的新訊</h4>
+                  <p>公開 RSS 抓取失敗：&lt;urlopen error [Errno 8] nodename nor servname provided, or not known&gt;</p>
+                  <div class="use-case"><strong>可用角度</strong>保留來源入口，下一次排程會再檢查公開頁與 RSS。</div>
+                  <a class="source-link" href="https://www.outsiders.com.tw/" target="_blank" rel="noopener noreferrer">閱讀來源</a>
+                  <div class="card-actions">
+                    <button class="feedback-button" type="button" data-action="like">喜歡</button>
+                    <button class="feedback-button" type="button" data-action="useful">有用</button>
+                    <button class="feedback-button" type="button" data-action="product">可用於選品</button>
+                    <button class="feedback-button" type="button" data-action="post">想做成貼文</button>
+                    <button class="feedback-button" type="button" data-action="irrelevant">不相關</button>
+                  </div>
+                </div>
+              </article>
+            </div>
+          </section>
+          <section class="source-panel" data-source="gq">
+            <div class="source-panel-header">
+              <div>
+                <p class="eyebrow">Source</p>
+                <h3>GQ Taiwan</h3>
+                <div class="source-meta"><span class="pill">男性 TA</span><span class="pill">鞋款</span><span class="pill">設計趨勢</span></div>
+              </div>
+              <p>男性 TA、城市風格、鞋款與機能設計趨勢。已排除純娛樂與低關聯影片。</p>
+            </div>
+            <div class="source-grid">
+              <article class="article-card" data-id="gq-fallback" data-title="本週暫無可公開確認的新訊" data-tags="GQ Taiwan,待確認">
+                <div class="article-image article-image-empty"><span>NO IMAGE</span></div>
+                <div class="article-body">
+                  <div class="meta-row"><span class="pill">GQ Taiwan</span><span class="pill">待更新</span><span class="pill">GQ Taiwan</span><span class="pill">待確認</span></div>
+                  <h4>本週暫無可公開確認的新訊</h4>
+                  <p>公開 RSS 抓取失敗：&lt;urlopen error [Errno 8] nodename nor servname provided, or not known&gt;</p>
+                  <div class="use-case"><strong>可用角度</strong>保留來源入口，下一次排程會再檢查公開頁與 RSS。</div>
+                  <a class="source-link" href="https://www.gq.com.tw/" target="_blank" rel="noopener noreferrer">閱讀來源</a>
+                  <div class="card-actions">
+                    <button class="feedback-button" type="button" data-action="like">喜歡</button>
+                    <button class="feedback-button" type="button" data-action="useful">有用</button>
+                    <button class="feedback-button" type="button" data-action="product">可用於選品</button>
+                    <button class="feedback-button" type="button" data-action="post">想做成貼文</button>
+                    <button class="feedback-button" type="button" data-action="irrelevant">不相關</button>
+                  </div>
+                </div>
+              </article>
+            </div>
+          </section>
+          <section class="source-panel" data-source="hiking">
+            <div class="source-panel-header">
+              <div>
+                <p class="eyebrow">Source</p>
+                <h3>健行筆記</h3>
+                <div class="source-meta"><span class="pill">登山知識</span><span class="pill">戶外安全</span><span class="pill">路線</span></div>
+              </div>
+              <p>台灣登山路線、戶外安全、健行知識與活動消息。</p>
+            </div>
+            <div class="source-grid">
+              <article class="article-card" data-id="hiking-fallback" data-title="本週暫無可公開確認的新訊" data-tags="健行筆記,待確認">
+                <div class="article-image article-image-empty"><span>NO IMAGE</span></div>
+                <div class="article-body">
+                  <div class="meta-row"><span class="pill">健行筆記</span><span class="pill">待更新</span><span class="pill">健行筆記</span><span class="pill">待確認</span></div>
+                  <h4>本週暫無可公開確認的新訊</h4>
+                  <p>公開首頁抓取失敗：&lt;urlopen error [Errno 8] nodename nor servname provided, or not known&gt;</p>
+                  <div class="use-case"><strong>可用角度</strong>保留來源入口，下一次排程會再檢查公開頁與 RSS。</div>
+                  <a class="source-link" href="https://hiking.biji.co/" target="_blank" rel="noopener noreferrer">閱讀來源</a>
+                  <div class="card-actions">
+                    <button class="feedback-button" type="button" data-action="like">喜歡</button>
+                    <button class="feedback-button" type="button" data-action="useful">有用</button>
+                    <button class="feedback-button" type="button" data-action="product">可用於選品</button>
+                    <button class="feedback-button" type="button" data-action="post">想做成貼文</button>
+                    <button class="feedback-button" type="button" data-action="irrelevant">不相關</button>
+                  </div>
+                </div>
+              </article>
+            </div>
+          </section>
+          <section class="source-panel" data-source="running">
+            <div class="source-panel-header">
+              <div>
+                <p class="eyebrow">Source</p>
+                <h3>運動筆記</h3>
+                <div class="source-meta"><span class="pill">鞋款</span><span class="pill">跑團</span><span class="pill">訓練</span></div>
+              </div>
+              <p>跑鞋新品、品牌動態、跑步訓練、賽事與跑團話題。</p>
+            </div>
+            <div class="source-grid">
+              <article class="article-card" data-id="running-fallback" data-title="本週暫無可公開確認的新訊" data-tags="運動筆記,待確認">
+                <div class="article-image article-image-empty"><span>NO IMAGE</span></div>
+                <div class="article-body">
+                  <div class="meta-row"><span class="pill">運動筆記</span><span class="pill">待更新</span><span class="pill">運動筆記</span><span class="pill">待確認</span></div>
+                  <h4>本週暫無可公開確認的新訊</h4>
+                  <p>公開首頁抓取失敗：&lt;urlopen error [Errno 8] nodename nor servname provided, or not known&gt;</p>
+                  <div class="use-case"><strong>可用角度</strong>保留來源入口，下一次排程會再檢查公開頁與 RSS。</div>
+                  <a class="source-link" href="https://running.biji.co/" target="_blank" rel="noopener noreferrer">閱讀來源</a>
+                  <div class="card-actions">
+                    <button class="feedback-button" type="button" data-action="like">喜歡</button>
+                    <button class="feedback-button" type="button" data-action="useful">有用</button>
+                    <button class="feedback-button" type="button" data-action="product">可用於選品</button>
+                    <button class="feedback-button" type="button" data-action="post">想做成貼文</button>
+                    <button class="feedback-button" type="button" data-action="irrelevant">不相關</button>
+                  </div>
+                </div>
+              </article>
+            </div>
+          </section>
+          <section class="source-panel" data-source="likeshop">
+            <div class="source-panel-header">
+              <div>
+                <p class="eyebrow">Source</p>
+                <h3>GQ LikeShop</h3>
+                <div class="source-meta"><span class="pill">待確認</span><span class="pill">不硬補</span></div>
+              </div>
+              <p>只收可確認日期與文章型內容；影片或無法確認日期時不放今日文章牆。</p>
+            </div>
+            <div class="source-grid">
+              <article class="article-card" data-id="likeshop-fallback" data-title="本週暫無可公開確認的新訊" data-tags="GQ LikeShop,待確認">
+                <div class="article-image article-image-empty"><span>NO IMAGE</span></div>
+                <div class="article-body">
+                  <div class="meta-row"><span class="pill">GQ LikeShop</span><span class="pill">待更新</span><span class="pill">GQ LikeShop</span><span class="pill">待確認</span></div>
+                  <h4>本週暫無可公開確認的新訊</h4>
+                  <p>雲端版未抓到可公開確認日期的 LikeShop 文章，避免把影片或舊內容誤放成今日新聞。</p>
+                  <div class="use-case"><strong>可用角度</strong>保留來源入口，下一次排程會再檢查公開頁與 RSS。</div>
+                  <a class="source-link" href="https://likeshop.me/gqtaiwan" target="_blank" rel="noopener noreferrer">閱讀來源</a>
+                  <div class="card-actions">
+                    <button class="feedback-button" type="button" data-action="like">喜歡</button>
+                    <button class="feedback-button" type="button" data-action="useful">有用</button>
+                    <button class="feedback-button" type="button" data-action="product">可用於選品</button>
+                    <button class="feedback-button" type="button" data-action="post">想做成貼文</button>
+                    <button class="feedback-button" type="button" data-action="irrelevant">不相關</button>
+                  </div>
+                </div>
+              </article>
+            </div>
+          </section>
+          <section class="source-panel" data-source="material">
+            <div class="source-panel-header">
+              <div>
+                <p class="eyebrow">Source</p>
+                <h3>材質 / 規範</h3>
+                <div class="source-meta"><span class="pill">PFAS-free</span><span class="pill">環保材質</span><span class="pill">規範</span></div>
+              </div>
+              <p>歐盟、ECHA、Textile Exchange、ISPO 等公開來源的新規範與材料趨勢。</p>
+            </div>
+            <div class="source-grid">
+              <article class="article-card" data-id="material-fallback" data-title="本週暫無可公開確認的新訊" data-tags="材質 / 規範,待確認">
+                <div class="article-image article-image-empty"><span>NO IMAGE</span></div>
+                <div class="article-body">
+                  <div class="meta-row"><span class="pill">材質 / 規範</span><span class="pill">待更新</span><span class="pill">材質 / 規範</span><span class="pill">待確認</span></div>
+                  <h4>本週暫無可公開確認的新訊</h4>
+                  <p>本次公開來源未抓到當月新的材質或歐盟規範文章；舊法規不放進今日首頁。</p>
+                  <div class="use-case"><strong>可用角度</strong>保留來源入口，下一次排程會再檢查公開頁與 RSS。</div>
+                  <a class="source-link" href="https://echa.europa.eu/" target="_blank" rel="noopener noreferrer">閱讀來源</a>
+                  <div class="card-actions">
+                    <button class="feedback-button" type="button" data-action="like">喜歡</button>
+                    <button class="feedback-button" type="button" data-action="useful">有用</button>
+                    <button class="feedback-button" type="button" data-action="product">可用於選品</button>
+                    <button class="feedback-button" type="button" data-action="post">想做成貼文</button>
+                    <button class="feedback-button" type="button" data-action="irrelevant">不相關</button>
+                  </div>
+                </div>
+              </article>
+            </div>
+          </section>
+        </div>
+      </section>
+      <section class="section source-panel" id="accounts" data-source="accounts">
+        <div class="source-panel-header">
+          <div>
+            <p class="eyebrow">Instagram accounts</p>
+            <h3>IG 帳號最新動態</h3>
+            <div class="source-meta"><span class="pill">不存登入資料</span><span class="pill">文字版</span></div>
+          </div>
+          <p>雲端排程不使用 Kathy 的 IG cookie。這區保留帳號入口與追蹤角度；需要日期確認的貼文，後續可用登入瀏覽器補抓。</p>
+        </div>
+        <div class="account-grid">
+          <article class="account-card">
+            <div class="avatar-fallback">PT</div>
+            <div>
+              <div class="meta-row"><span class="pill">Instagram</span><span class="pill">雲端公開版</span><span class="pill">需公開驗證</span></div>
+              <h4>PAPERSKY.TW</h4>
+              <p>旅遊企劃、戶外行旅、活動報名。雲端版不存 IG cookie；若公開頁無法確認最新日期，就不把舊貼文寫成今天最新。</p>
+            </div>
+            <div class="use-case"><strong>可用角度</strong>保留帳號入口，後續可用登入瀏覽器手動補抓最新貼文日期。</div>
+            <a class="source-link ig-post-link" href="https://www.instagram.com/papersky.tw/" rel="noopener noreferrer">查看帳號</a>
+          </article>
+
+          <article class="account-card">
+            <div class="avatar-fallback">A</div>
+            <div>
+              <div class="meta-row"><span class="pill">Instagram</span><span class="pill">雲端公開版</span><span class="pill">需公開驗證</span></div>
+              <h4>AMOUTER</h4>
+              <p>同行選品、鞋款、門市活動。雲端版不存 IG cookie；若公開頁無法確認最新日期，就不把舊貼文寫成今天最新。</p>
+            </div>
+            <div class="use-case"><strong>可用角度</strong>保留帳號入口，後續可用登入瀏覽器手動補抓最新貼文日期。</div>
+            <a class="source-link ig-post-link" href="https://www.instagram.com/amouter/" rel="noopener noreferrer">查看帳號</a>
+          </article>
+
+          <article class="account-card">
+            <div class="avatar-fallback">GT</div>
+            <div>
+              <div class="meta-row"><span class="pill">Instagram</span><span class="pill">雲端公開版</span><span class="pill">需公開驗證</span></div>
+              <h4>GQ Taiwan</h4>
+              <p>男性風格、運動與城市生活。雲端版不存 IG cookie；若公開頁無法確認最新日期，就不把舊貼文寫成今天最新。</p>
+            </div>
+            <div class="use-case"><strong>可用角度</strong>保留帳號入口，後續可用登入瀏覽器手動補抓最新貼文日期。</div>
+            <a class="source-link ig-post-link" href="https://www.instagram.com/gqtaiwan/" rel="noopener noreferrer">查看帳號</a>
+          </article>
+
+          <article class="account-card">
+            <div class="avatar-fallback">AL</div>
+            <div>
+              <div class="meta-row"><span class="pill">Instagram</span><span class="pill">雲端公開版</span><span class="pill">需公開驗證</span></div>
+              <h4>AMOUTER Life</h4>
+              <p>同行生活線、包款與機能服飾。雲端版不存 IG cookie；若公開頁無法確認最新日期，就不把舊貼文寫成今天最新。</p>
+            </div>
+            <div class="use-case"><strong>可用角度</strong>保留帳號入口，後續可用登入瀏覽器手動補抓最新貼文日期。</div>
+            <a class="source-link ig-post-link" href="https://www.instagram.com/amouter_life/" rel="noopener noreferrer">查看帳號</a>
+          </article>
+
+          <article class="account-card">
+            <div class="avatar-fallback">WT</div>
+            <div>
+              <div class="meta-row"><span class="pill">Instagram</span><span class="pill">雲端公開版</span><span class="pill">需公開驗證</span></div>
+              <h4>WRC Taipei</h4>
+              <p>跑團活動與品牌合作。雲端版不存 IG cookie；若公開頁無法確認最新日期，就不把舊貼文寫成今天最新。</p>
+            </div>
+            <div class="use-case"><strong>可用角度</strong>保留帳號入口，後續可用登入瀏覽器手動補抓最新貼文日期。</div>
+            <a class="source-link ig-post-link" href="https://www.instagram.com/wrc_taipei/" rel="noopener noreferrer">查看帳號</a>
+          </article>
+
+          <article class="account-card">
+            <div class="avatar-fallback">N</div>
+            <div>
+              <div class="meta-row"><span class="pill">Instagram</span><span class="pill">雲端公開版</span><span class="pill">需公開驗證</span></div>
+              <h4>NNormal</h4>
+              <p>越野跑鞋與品牌故事。雲端版不存 IG cookie；若公開頁無法確認最新日期，就不把舊貼文寫成今天最新。</p>
+            </div>
+            <div class="use-case"><strong>可用角度</strong>保留帳號入口，後續可用登入瀏覽器手動補抓最新貼文日期。</div>
+            <a class="source-link ig-post-link" href="https://www.instagram.com/nnormal_official/" rel="noopener noreferrer">查看帳號</a>
+          </article>
+
+          <article class="account-card">
+            <div class="avatar-fallback">KO</div>
+            <div>
+              <div class="meta-row"><span class="pill">Instagram</span><span class="pill">雲端公開版</span><span class="pill">需公開驗證</span></div>
+              <h4>Keep On</h4>
+              <p>登山補給、同行活動。雲端版不存 IG cookie；若公開頁無法確認最新日期，就不把舊貼文寫成今天最新。</p>
+            </div>
+            <div class="use-case"><strong>可用角度</strong>保留帳號入口，後續可用登入瀏覽器手動補抓最新貼文日期。</div>
+            <a class="source-link ig-post-link" href="https://www.instagram.com/keepon.outdoor/" rel="noopener noreferrer">查看帳號</a>
+          </article>
+
+          <article class="account-card">
+            <div class="avatar-fallback">R</div>
+            <div>
+              <div class="meta-row"><span class="pill">Instagram</span><span class="pill">雲端公開版</span><span class="pill">需公開驗證</span></div>
+              <h4>ROCKLAND</h4>
+              <p>登山旅遊、裝備建議。雲端版不存 IG cookie；若公開頁無法確認最新日期，就不把舊貼文寫成今天最新。</p>
+            </div>
+            <div class="use-case"><strong>可用角度</strong>保留帳號入口，後續可用登入瀏覽器手動補抓最新貼文日期。</div>
+            <a class="source-link ig-post-link" href="https://www.instagram.com/rockland_taiwan/" rel="noopener noreferrer">查看帳號</a>
+          </article>
+
+          <article class="account-card">
+            <div class="avatar-fallback">CC</div>
+            <div>
+              <div class="meta-row"><span class="pill">Instagram</span><span class="pill">雲端公開版</span><span class="pill">需公開驗證</span></div>
+              <h4>Cliff Coaching</h4>
+              <p>越野跑訓練。雲端版不存 IG cookie；若公開頁無法確認最新日期，就不把舊貼文寫成今天最新。</p>
+            </div>
+            <div class="use-case"><strong>可用角度</strong>保留帳號入口，後續可用登入瀏覽器手動補抓最新貼文日期。</div>
+            <a class="source-link ig-post-link" href="https://www.instagram.com/cliff_coaching_system/" rel="noopener noreferrer">查看帳號</a>
+          </article>
+
+          <article class="account-card">
+            <div class="avatar-fallback">BR</div>
+            <div>
+              <div class="meta-row"><span class="pill">Instagram</span><span class="pill">雲端公開版</span><span class="pill">需公開驗證</span></div>
+              <h4>Blackwater RC</h4>
+              <p>跑團與恢復訓練。雲端版不存 IG cookie；若公開頁無法確認最新日期，就不把舊貼文寫成今天最新。</p>
+            </div>
+            <div class="use-case"><strong>可用角度</strong>保留帳號入口，後續可用登入瀏覽器手動補抓最新貼文日期。</div>
+            <a class="source-link ig-post-link" href="https://www.instagram.com/blackwater.rc/" rel="noopener noreferrer">查看帳號</a>
+          </article>
+
+          <article class="account-card">
+            <div class="avatar-fallback">BT</div>
+            <div>
+              <div class="meta-row"><span class="pill">Instagram</span><span class="pill">雲端公開版</span><span class="pill">需公開驗證</span></div>
+              <h4>BEAMS Taiwan</h4>
+              <p>城市風格、鞋款與機能材質。雲端版不存 IG cookie；若公開頁無法確認最新日期，就不把舊貼文寫成今天最新。</p>
+            </div>
+            <div class="use-case"><strong>可用角度</strong>保留帳號入口，後續可用登入瀏覽器手動補抓最新貼文日期。</div>
+            <a class="source-link ig-post-link" href="https://www.instagram.com/beams_taiwan/" rel="noopener noreferrer">查看帳號</a>
+          </article>
+
+          <article class="account-card">
+            <div class="avatar-fallback">MR</div>
+            <div>
+              <div class="meta-row"><span class="pill">Instagram</span><span class="pill">雲端公開版</span><span class="pill">需公開驗證</span></div>
+              <h4>MAC RUN CLUB</h4>
+              <p>跑團與鞋款合作。雲端版不存 IG cookie；若公開頁無法確認最新日期，就不把舊貼文寫成今天最新。</p>
+            </div>
+            <div class="use-case"><strong>可用角度</strong>保留帳號入口，後續可用登入瀏覽器手動補抓最新貼文日期。</div>
+            <a class="source-link ig-post-link" href="https://www.instagram.com/montreal.athletes.club/" rel="noopener noreferrer">查看帳號</a>
+          </article>
+
+          <article class="account-card">
+            <div class="avatar-fallback">G</div>
+            <div>
+              <div class="meta-row"><span class="pill">Instagram</span><span class="pill">雲端公開版</span><span class="pill">需公開驗證</span></div>
+              <h4>GOOPi</h4>
+              <p>機能服飾、生活風格。雲端版不存 IG cookie；若公開頁無法確認最新日期，就不把舊貼文寫成今天最新。</p>
+            </div>
+            <div class="use-case"><strong>可用角度</strong>保留帳號入口，後續可用登入瀏覽器手動補抓最新貼文日期。</div>
+            <a class="source-link ig-post-link" href="https://www.instagram.com/goopi.co/" rel="noopener noreferrer">查看帳號</a>
+          </article>
+        </div>
+      </section>
+      <section class="section" id="feedback">
+        <div class="feedback-panel">
+          <p class="eyebrow">Feedback</p>
+          <h3>本頁回饋</h3>
+          <p id="feedbackSummary">尚未留下回饋。</p>
+          <div class="card-actions" style="margin-top:12px">
+            <button class="feedback-button" type="button" id="copyFeedback" data-action="useful">複製回饋 JSON</button>
+            <button class="feedback-button" type="button" id="resetFeedback" data-action="irrelevant">清除本頁回饋</button>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+  <div class="toast" id="toast">已更新</div>
+  <script>
+    const STORAGE_KEY = "kathyOutdoorRadarFeedbackCloud";
+    let feedback = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
+    const toast = document.getElementById("toast");
+    function showToast(text) {
+      toast.textContent = text;
+      toast.dataset.show = "true";
+      setTimeout(() => toast.dataset.show = "false", 1600);
+    }
+    function saveFeedback() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(feedback, null, 2));
+      renderFeedback();
+    }
+    function renderFeedback() {
+      const counts = Object.values(feedback).flat().reduce((acc, action) => {
+        acc[action] = (acc[action] || 0) + 1;
+        return acc;
+      }, {});
+      const summary = Object.entries(counts).map(([key, value]) => `${key}：${value}`).join(" / ");
+      document.getElementById("feedbackSummary").textContent = summary || "尚未留下回饋。";
+    }
+    document.querySelectorAll(".filter-button").forEach((button) => {
+      button.addEventListener("click", () => {
+        const filter = button.dataset.filter;
+        document.querySelectorAll(".filter-button").forEach((item) => item.setAttribute("aria-pressed", String(item === button)));
+        document.querySelectorAll(".source-panel[data-source]").forEach((panel) => {
+          panel.hidden = filter !== "all" && panel.dataset.source !== filter;
+        });
+        if (filter === "accounts") document.getElementById("accounts").scrollIntoView({ behavior: "smooth" });
+      });
+    });
+    document.querySelectorAll(".feedback-button[data-action]").forEach((button) => {
+      button.addEventListener("click", () => {
+        const card = button.closest("[data-id]");
+        if (!card) return;
+        const id = card.dataset.id;
+        const action = button.dataset.action;
+        feedback[id] = feedback[id] || [];
+        if (!feedback[id].includes(action)) feedback[id].push(action);
+        saveFeedback();
+        showToast("已記錄回饋。");
+      });
+    });
+    document.getElementById("copyFeedback").addEventListener("click", async () => {
+      await navigator.clipboard.writeText(JSON.stringify(feedback, null, 2));
+      showToast("已複製回饋。");
+    });
+    document.getElementById("resetFeedback").addEventListener("click", () => {
+      feedback = {};
+      saveFeedback();
+      showToast("已清除回饋。");
+    });
+    renderFeedback();
+  </script>
+</body>
+</html>

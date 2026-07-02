@@ -1,0 +1,6 @@
+.DS_Store
+site/
+__pycache__/
+*.pyc
+CLOUD_SETUP.md
+01_營運後台/每日戶外情報/每日戶外情報規劃.md

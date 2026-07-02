@@ -1,0 +1,63 @@
+name: Daily Outdoor Radar
+
+on:
+  schedule:
+    # GitHub Actions uses UTC. 00:55 UTC = 08:55 Asia/Taipei.
+    # Running a few minutes before 09:00 gives the page time to publish.
+    - cron: "55 0 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: daily-outdoor-radar
+  cancel-in-progress: false
+
+jobs:
+  update-and-publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Generate radar page
+        run: python scripts/update_radar_cloud.py
+
+      - name: Commit updated radar files
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add "01_營運後台/每日戶外情報/Kathy_Outdoor_Radar.html" "01_營運後台/每日戶外情報/Kathy_Outdoor_Radar_Latest.md"
+          if git diff --cached --quiet; then
+            echo "No radar changes to commit."
+          else
+            git commit -m "Update daily outdoor radar"
+            git push
+          fi
+
+      - name: Prepare Pages artifact
+        run: |
+          mkdir -p site
+          cp "01_營運後台/每日戶外情報/Kathy_Outdoor_Radar.html" site/index.html
+          cp "01_營運後台/每日戶外情報/Kathy_Outdoor_Radar_Latest.md" site/Kathy_Outdoor_Radar_Latest.md
+
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
