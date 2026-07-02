@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import html
 import hashlib
+import json
 import os
 import re
 import sys
@@ -34,48 +35,6 @@ USER_AGENT = (
     "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126 Safari/537.36"
 )
 
-RELEVANT_GQ_KEYWORDS = [
-    "鞋",
-    "球鞋",
-    "足球鞋",
-    "跑",
-    "戶外",
-    "高爾夫",
-    "運動",
-    "服裝",
-    "服飾",
-    "穿搭",
-    "格紋",
-    "男裝",
-    "聯名",
-    "設計",
-    "球衣",
-    "機能",
-    "防水",
-    "GORE",
-    "材質",
-    "世界盃",
-    "HOKA",
-    "Salomon",
-    "NNormal",
-    "Altra",
-    "Topo",
-    "KEEN",
-]
-
-RUNNING_KEYWORDS = [
-    "HOKA",
-    "On",
-    "Cloudboom",
-    "SAUCONY",
-    "Triumph",
-    "跑鞋",
-    "速度訓練",
-    "Joe Klecker",
-    "馬拉松",
-    "訓練",
-]
-
 
 @dataclass
 class Article:
@@ -92,6 +51,19 @@ class Article:
 
 
 @dataclass
+class InstagramPost:
+    account: str
+    username: str
+    profile_url: str
+    post_url: str
+    date_label: str
+    summary: str
+    angle: str
+    status: str
+    id: str
+
+
+@dataclass
 class SourceResult:
     group: str
     title: str
@@ -101,8 +73,11 @@ class SourceResult:
     note: str = ""
 
 
-def fetch_text(url: str, timeout: int = 25) -> str:
-    req = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
+def fetch_text(url: str, timeout: int = 25, headers: dict[str, str] | None = None) -> str:
+    request_headers = {"User-Agent": USER_AGENT}
+    if headers:
+        request_headers.update(headers)
+    req = urllib.request.Request(url, headers=request_headers)
     with urllib.request.urlopen(req, timeout=timeout) as response:
         charset = response.headers.get_content_charset() or "utf-8"
         return response.read().decode(charset, errors="replace")
@@ -138,13 +113,13 @@ def parse_pub_date(value: str | None) -> datetime | None:
         return None
 
 
-def is_fresh(date_value: datetime | None, now: datetime) -> bool:
+def is_today_or_unknown(date_value: datetime | None, now: datetime) -> bool:
     if date_value is None:
         return True
-    return date_value.year == now.year and date_value.month == now.month
+    return date_value.date() == now.date()
 
 
-def date_label(date_value: datetime | None, now: datetime, fallback: str = "公開首頁最新") -> str:
+def date_label(date_value: datetime | None, now: datetime, fallback: str = "公開首頁最新｜日期待確認") -> str:
     if date_value is None:
         return fallback
     if date_value.date() == now.date():
@@ -220,7 +195,6 @@ def parse_rss_articles(
     group: str,
     now: datetime,
     limit: int,
-    relevant_keywords: list[str] | None = None,
     fetch_meta: bool = False,
 ) -> list[Article]:
     ns = {
@@ -235,15 +209,6 @@ def parse_rss_articles(
         link = (item.findtext("link") or "").strip()
         pub = parse_pub_date(item.findtext("pubDate"))
         description = strip_tags(item.findtext("description") or "")
-        categories = " ".join(strip_tags(cat.text or "") for cat in item.findall("category"))
-        keywords = strip_tags(item.findtext("media:keywords", namespaces=ns) or "")
-        haystack = " ".join([title, description, categories, keywords])
-
-        if relevant_keywords and not any(keyword.lower() in haystack.lower() for keyword in relevant_keywords):
-            continue
-        if not is_fresh(pub, now):
-            continue
-
         image = ""
         thumb = item.find("media:thumbnail", ns)
         if thumb is not None:
@@ -254,6 +219,8 @@ def parse_rss_articles(
             description = description or meta.get("description", "")
             meta_date = parse_pub_date(meta.get("date"))
             pub = pub or meta_date
+        if not is_today_or_unknown(pub, now):
+            continue
 
         articles.append(
             Article(
@@ -287,7 +254,7 @@ def parse_hiking(now: datetime) -> list[Article]:
         clean_title = html.unescape(title).strip()
         meta = article_meta(url)
         pub = parse_pub_date(meta.get("date"))
-        if not is_fresh(pub, now):
+        if not is_today_or_unknown(pub, now):
             continue
         desc = meta.get("description") or clean_title
         articles.append(
@@ -304,7 +271,7 @@ def parse_hiking(now: datetime) -> list[Article]:
                 id=f"hiking-{slug(url)}",
             )
         )
-        if len(articles) >= 4:
+        if len(articles) >= 12:
             break
     return articles
 
@@ -328,15 +295,13 @@ def parse_running(now: datetime) -> list[Article]:
     for pattern in patterns:
         for href, title, image in pattern.findall(text):
             clean_title = html.unescape(title).strip()
-            if not any(keyword.lower() in clean_title.lower() for keyword in RUNNING_KEYWORDS):
-                continue
             url = urllib.parse.urljoin("https://running.biji.co/", html.unescape(href))
             if url in seen:
                 continue
             seen.add(url)
             meta = article_meta(url)
             pub = parse_pub_date(meta.get("date"))
-            if not is_fresh(pub, now):
+            if not is_today_or_unknown(pub, now):
                 continue
             desc = meta.get("description") or clean_title
             articles.append(
@@ -353,16 +318,16 @@ def parse_running(now: datetime) -> list[Article]:
                     id=f"running-{slug(url)}",
                 )
             )
-            if len(articles) >= 4:
+            if len(articles) >= 12:
                 return articles
     return articles
 
 
-def fallback_article(source: str, group: str, message: str, url: str) -> Article:
+def fallback_article(source: str, group: str, message: str, url: str, title: str = "今日暫無可公開確認的新文章") -> Article:
     return Article(
         source=source,
         group=group,
-        title="本週暫無可公開確認的新訊",
+        title=title,
         url=url,
         date_label="待更新",
         tags=[source, "待確認"],
@@ -381,17 +346,19 @@ def build_sources(now: datetime) -> list[SourceResult]:
             "OUTSiDERS",
             "outsiders",
             now,
-            5,
+            20,
             fetch_meta=True,
         )
     except Exception as exc:
         outsiders = [fallback_article("OUTSiDERS", "outsiders", f"公開 RSS 抓取失敗：{exc}", "https://www.outsiders.com.tw/")]
+    if not outsiders:
+        outsiders = [fallback_article("OUTSiDERS", "outsiders", "今天 RSS 內沒有抓到當日發布的新文章。", "https://www.outsiders.com.tw/")]
     results.append(
         SourceResult(
             "outsiders",
             "OUTSiDERS",
-            "戶外文化、戶外產業、機能品牌與台灣山林議題。",
-            ["戶外文化", "機能品牌", "男女皆可"],
+            "每日收當日可確認發布日期的新文章；不再依主題幫 Kathy 排除。",
+            ["每日新文章", "全收", "不挑選"],
             outsiders,
         )
     )
@@ -402,19 +369,18 @@ def build_sources(now: datetime) -> list[SourceResult]:
             "GQ Taiwan",
             "gq",
             now,
-            4,
-            relevant_keywords=RELEVANT_GQ_KEYWORDS,
+            25,
         )
     except Exception as exc:
         gq = [fallback_article("GQ Taiwan", "gq", f"公開 RSS 抓取失敗：{exc}", "https://www.gq.com.tw/")]
     if not gq:
-        gq = [fallback_article("GQ Taiwan", "gq", "今天 RSS 內沒有符合鞋款、男性戶外、機能服飾或設計趨勢的新文章。", "https://www.gq.com.tw/")]
+        gq = [fallback_article("GQ Taiwan", "gq", "今天 RSS 內沒有抓到當日發布的新文章。", "https://www.gq.com.tw/")]
     results.append(
         SourceResult(
             "gq",
             "GQ Taiwan",
-            "男性 TA、城市風格、鞋款與機能設計趨勢。已排除純娛樂與低關聯影片。",
-            ["男性 TA", "鞋款", "設計趨勢"],
+            "每日收 GQ RSS 當日新文章；不再依鞋款、男性戶外或設計關鍵字排除。",
+            ["每日新文章", "RSS 全收", "不挑選"],
             gq,
         )
     )
@@ -424,13 +390,13 @@ def build_sources(now: datetime) -> list[SourceResult]:
     except Exception as exc:
         hiking = [fallback_article("健行筆記", "hiking", f"公開首頁抓取失敗：{exc}", "https://hiking.biji.co/")]
     if not hiking:
-        hiking = [fallback_article("健行筆記", "hiking", "公開首頁沒有抓到當月可確認的新文章。", "https://hiking.biji.co/")]
+        hiking = [fallback_article("健行筆記", "hiking", "公開首頁沒有抓到當日可確認的新文章。", "https://hiking.biji.co/")]
     results.append(
         SourceResult(
             "hiking",
             "健行筆記",
-            "台灣登山路線、戶外安全、健行知識與活動消息。",
-            ["登山知識", "戶外安全", "路線"],
+            "公開首頁當日新文章與首頁最新項目；不再依主題挑選。",
+            ["每日新文章", "首頁最新", "不挑選"],
             hiking,
         )
     )
@@ -440,13 +406,13 @@ def build_sources(now: datetime) -> list[SourceResult]:
     except Exception as exc:
         running = [fallback_article("運動筆記", "running", f"公開首頁抓取失敗：{exc}", "https://running.biji.co/")]
     if not running:
-        running = [fallback_article("運動筆記", "running", "公開首頁沒有抓到當月可確認的跑鞋或訓練文章。", "https://running.biji.co/")]
+        running = [fallback_article("運動筆記", "running", "公開首頁沒有抓到當日可確認的新文章。", "https://running.biji.co/")]
     results.append(
         SourceResult(
             "running",
             "運動筆記",
-            "跑鞋新品、品牌動態、跑步訓練、賽事與跑團話題。",
-            ["鞋款", "跑團", "訓練"],
+            "公開首頁當日新文章與首頁最新項目；不再只挑跑鞋或訓練文章。",
+            ["每日新文章", "首頁最新", "不挑選"],
             running,
         )
     )
@@ -455,13 +421,13 @@ def build_sources(now: datetime) -> list[SourceResult]:
         SourceResult(
             "likeshop",
             "GQ LikeShop",
-            "只收可確認日期與文章型內容；影片或無法確認日期時不放今日文章牆。",
+            "若公開頁能確認當日新內容才列入；無法確認時只保留入口。",
             ["待確認", "不硬補"],
             [
                 fallback_article(
                     "GQ LikeShop",
                     "likeshop",
-                    "雲端版未抓到可公開確認日期的 LikeShop 文章，避免把影片或舊內容誤放成今日新聞。",
+                    "雲端版未抓到可公開確認日期的 LikeShop 當日文章，避免把舊內容誤放成今日新聞。",
                     "https://likeshop.me/gqtaiwan",
                 )
             ],
@@ -478,7 +444,7 @@ def build_sources(now: datetime) -> list[SourceResult]:
                 fallback_article(
                     "材質 / 規範",
                     "material",
-                    "本次公開來源未抓到當月新的材質或歐盟規範文章；舊法規不放進今日首頁。",
+                    "本次公開來源未抓到當日新的材質或歐盟規範文章；舊法規不放進今日首頁。",
                     "https://echa.europa.eu/",
                 )
             ],
@@ -503,6 +469,104 @@ IG_ACCOUNTS = [
     ("MAC RUN CLUB", "https://www.instagram.com/montreal.athletes.club/", "跑團與鞋款合作"),
     ("GOOPi", "https://www.instagram.com/goopi.co/", "機能服飾、生活風格"),
 ]
+
+
+def instagram_username(url: str) -> str:
+    parsed = urllib.parse.urlparse(url)
+    return parsed.path.strip("/").split("/")[0]
+
+
+def parse_instagram_time(value: object) -> datetime | None:
+    if value is None:
+        return None
+    try:
+        timestamp = int(value)
+        return datetime.fromtimestamp(timestamp, TZ)
+    except Exception:
+        return None
+
+
+def summarize_caption(caption: str, fallback: str) -> str:
+    text = re.sub(r"\s+", " ", html.unescape(caption or "")).strip()
+    if not text:
+        return fallback
+    return (text[:180] + "…") if len(text) > 180 else text
+
+
+def instagram_status(post_time: datetime | None, now: datetime) -> str:
+    if post_time is None:
+        return "最新貼文日期待確認"
+    delta = now.date() - post_time.date()
+    if delta.days <= 0:
+        return "今天最新貼文"
+    if delta.days <= 7:
+        return "本週最新貼文"
+    if post_time.year == now.year and post_time.month == now.month:
+        return "本月最新貼文"
+    return "最新貼文較舊"
+
+
+def fetch_instagram_latest(account: str, url: str, angle: str, now: datetime) -> InstagramPost:
+    username = instagram_username(url)
+    api_url = f"https://www.instagram.com/api/v1/feed/user/{urllib.parse.quote(username)}/username/?count=6"
+    headers = {
+        "x-ig-app-id": "936619743392459",
+        "x-asbd-id": "129477",
+        "x-requested-with": "XMLHttpRequest",
+        "Referer": url,
+    }
+    try:
+        data = json.loads(fetch_text(api_url, timeout=18, headers=headers))
+        pinned = {str(value) for value in (data.get("pinned_profile_grid_items_ids") or [])}
+        items = data.get("items") or []
+        selected = None
+        for item in items:
+            item_ids = {str(item.get("pk") or ""), str(item.get("id") or "")}
+            if pinned.intersection(item_ids):
+                continue
+            selected = item
+            break
+        selected = selected or (items[0] if items else None)
+        if not selected:
+            raise ValueError("公開 API 沒有回傳貼文")
+
+        code = selected.get("code") or ""
+        post_url = f"https://www.instagram.com/p/{code}/" if code else url
+        caption_data = selected.get("caption") or {}
+        caption = caption_data.get("text") if isinstance(caption_data, dict) else ""
+        post_time = parse_instagram_time(selected.get("taken_at"))
+        media_type = {
+            1: "照片",
+            2: "Reels / 影片",
+            8: "輪播",
+        }.get(selected.get("media_type"), "貼文")
+        return InstagramPost(
+            account=account,
+            username=username,
+            profile_url=url,
+            post_url=post_url,
+            date_label=date_label(post_time, now, fallback="最新貼文｜日期待確認"),
+            summary=summarize_caption(caption, "最新貼文沒有公開文字，請直接打開 Instagram 查看。"),
+            angle=f"{angle}。形式：{media_type}。",
+            status=instagram_status(post_time, now),
+            id=f"ig-{slug(username + '-' + (code or 'latest'))}",
+        )
+    except Exception as exc:
+        return InstagramPost(
+            account=account,
+            username=username,
+            profile_url=url,
+            post_url=url,
+            date_label="抓取失敗",
+            summary=f"今天無法從 Instagram 公開 API 讀到最新貼文：{exc}",
+            angle=angle,
+            status="需手動查看",
+            id=f"ig-{slug(username + '-fallback')}",
+        )
+
+
+def build_instagram_posts(now: datetime) -> list[InstagramPost]:
+    return [fetch_instagram_latest(name, url, angle, now) for name, url, angle in IG_ACCOUNTS]
 
 
 def render_article(article: Article) -> str:
@@ -532,27 +596,36 @@ def render_article(article: Article) -> str:
               </article>"""
 
 
-def render_accounts() -> str:
+def render_accounts(instagram_posts: list[InstagramPost]) -> str:
     cards = []
-    for name, url, angle in IG_ACCOUNTS:
-        initials = "".join(part[:1] for part in re.split(r"[\s._-]+", name) if part)[:2].upper()
+    for post in instagram_posts:
+        initials = "".join(part[:1] for part in re.split(r"[\s._-]+", post.account) if part)[:2].upper()
         cards.append(
             f"""
-          <article class="account-card">
+          <article class="account-card" data-id="{escape(post.id)}">
             <div class="avatar-fallback">{escape(initials)}</div>
             <div>
-              <div class="meta-row"><span class="pill">Instagram</span><span class="pill">雲端公開版</span><span class="pill">需公開驗證</span></div>
-              <h4>{escape(name)}</h4>
-              <p>{escape(angle)}。雲端版不存 IG cookie；若公開頁無法確認最新日期，就不把舊貼文寫成今天最新。</p>
+              <div class="meta-row"><span class="pill">Instagram</span><span class="pill">@{escape(post.username)}</span><span class="pill">{escape(post.date_label)}</span><span class="pill">{escape(post.status)}</span></div>
+              <h4>{escape(post.account)}</h4>
+              <p>{escape(post.summary)}</p>
             </div>
-            <div class="use-case"><strong>可用角度</strong>保留帳號入口，後續可用登入瀏覽器手動補抓最新貼文日期。</div>
-            <a class="source-link ig-post-link" href="{escape(url)}" rel="noopener noreferrer">查看帳號</a>
+            <div class="use-case"><strong>可用角度</strong>{escape(post.angle)}</div>
+            <div class="ig-actions">
+              <a class="source-link ig-post-link" href="{escape(post.post_url)}" rel="noopener noreferrer">查看貼文</a>
+              <a class="source-link secondary-link" href="{escape(post.profile_url)}" rel="noopener noreferrer">查看帳號</a>
+            </div>
+            <div class="card-actions account-feedback">
+              <button class="feedback-button" type="button" data-action="like">喜歡</button>
+              <button class="feedback-button" type="button" data-action="useful">有用</button>
+              <button class="feedback-button" type="button" data-action="post">想做成貼文</button>
+              <button class="feedback-button" type="button" data-action="irrelevant">不相關</button>
+            </div>
           </article>"""
         )
     return "\n".join(cards)
 
 
-def render_html(results: list[SourceResult], now: datetime) -> str:
+def render_html(results: list[SourceResult], instagram_posts: list[InstagramPost], now: datetime) -> str:
     updated = now.strftime("%Y/%m/%d %H:%M")
     filter_buttons = [
         ("all", "全部來源"),
@@ -650,8 +723,11 @@ def render_html(results: list[SourceResult], now: datetime) -> str:
     .feedback-button[data-action="post"] {{ background: var(--blue); }}
     .feedback-button[data-action="irrelevant"] {{ background: #f0f0f0; color: #555; }}
     .account-grid {{ display: grid; gap: 12px; }}
-    .account-card {{ border: 1px solid var(--line); border-radius: 8px; padding: 14px; display: grid; grid-template-columns: 58px minmax(0, 1fr) minmax(180px, .35fr) auto; gap: 14px; align-items: start; }}
+    .account-card {{ border: 1px solid var(--line); border-radius: 8px; padding: 14px; display: grid; grid-template-columns: 58px minmax(0, 1fr) minmax(220px, .32fr) auto; gap: 14px; align-items: start; }}
     .avatar-fallback {{ width: 48px; height: 48px; border: 1px solid var(--text); border-radius: 50%; display: grid; place-items: center; font-weight: 800; }}
+    .ig-actions {{ display: grid; gap: 8px; }}
+    .secondary-link {{ background: #fff; color: var(--text); }}
+    .account-feedback {{ grid-column: 2 / -1; }}
     .feedback-panel {{ border: 1px solid var(--line); border-radius: 8px; padding: 16px; }}
     .toast {{ position: fixed; right: 16px; bottom: 16px; background: #111; color: #fff; padding: 10px 12px; border-radius: 6px; opacity: 0; transform: translateY(8px); transition: .2s ease; }}
     .toast[data-show="true"] {{ opacity: 1; transform: translateY(0); }}
@@ -676,7 +752,7 @@ def render_html(results: list[SourceResult], now: datetime) -> str:
     <main>
       <section class="section" id="feed">
         <div class="filter-row" role="toolbar" aria-label="來源篩選">{buttons}</div>
-        <p class="notice">更新時間：{escape(updated)}（台北時間）。雲端版只抓公開可驗證來源；IG 不保存登入資料，無法確認日期時只保留帳號入口，不把舊貼文寫成今日最新。</p>
+        <p class="notice">更新時間：{escape(updated)}（台北時間）。網站來源每日收當日可確認發布的新文章，不再依主題挑選；IG 以公開 JSON 抓每個帳號最新非置頂貼文，若失敗會在卡片上標明。</p>
         <div class="source-feed">{''.join(sections)}
         </div>
       </section>
@@ -684,12 +760,12 @@ def render_html(results: list[SourceResult], now: datetime) -> str:
         <div class="source-panel-header">
           <div>
             <p class="eyebrow">Instagram accounts</p>
-            <h3>IG 帳號最新動態</h3>
-            <div class="source-meta"><span class="pill">不存登入資料</span><span class="pill">文字版</span></div>
+            <h3>IG 帳號最新貼文</h3>
+            <div class="source-meta"><span class="pill">公開 JSON</span><span class="pill">每帳號 1 則</span><span class="pill">不下載圖片</span></div>
           </div>
-          <p>雲端排程不使用 Kathy 的 IG cookie。這區保留帳號入口與追蹤角度；需要日期確認的貼文，後續可用登入瀏覽器補抓。</p>
+          <p>雲端排程不使用 Kathy 的 IG cookie；會抓每個帳號目前公開可讀的最新非置頂貼文，保留日期、摘要與原貼文連結。</p>
         </div>
-        <div class="account-grid">{render_accounts()}
+        <div class="account-grid">{render_accounts(instagram_posts)}
         </div>
       </section>
       <section class="section" id="feedback">
@@ -765,14 +841,14 @@ def render_html(results: list[SourceResult], now: datetime) -> str:
 """
 
 
-def render_markdown(results: list[SourceResult], now: datetime) -> str:
+def render_markdown(results: list[SourceResult], instagram_posts: list[InstagramPost], now: datetime) -> str:
     lines = [
         "# Kathy Outdoor Radar 最新摘要",
         "",
         f"更新時間：{now.strftime('%Y-%m-%d %H:%M')}（台北時間；雲端公開來源版）  ",
         "HTML 固定頁面：`Kathy_Outdoor_Radar.html`",
         "",
-        "本版可由 GitHub Actions 在雲端排程產生，不依賴 Kathy 的 Mac 是否醒著。IG 不使用登入資料，無法公開確認日期時不把舊貼文寫成最新。",
+        "本版可由 GitHub Actions 在雲端排程產生，不依賴 Kathy 的 Mac 是否醒著。網站來源每日收當日新文章；IG 每個帳號列最新非置頂貼文。",
         "",
         "## 今日網站來源",
         "",
@@ -784,14 +860,14 @@ def render_markdown(results: list[SourceResult], now: datetime) -> str:
         lines.append("")
     lines.extend(
         [
-            "## IG 帳號",
+            "## IG 帳號最新貼文",
             "",
-            "雲端版不保存 IG cookie 或登入狀態；目前以帳號入口與追蹤角度呈現。若要確認 IG 最新貼文日期，需要使用 Kathy 已登入的瀏覽器補抓。",
+            "雲端版不保存 IG cookie 或登入狀態；使用 Instagram 公開 JSON 讀取每個帳號最新非置頂貼文。",
             "",
         ]
     )
-    for name, url, angle in IG_ACCOUNTS:
-        lines.append(f"- [{name}]({url})：{angle}")
+    for post in instagram_posts:
+        lines.append(f"- {post.date_label}｜[{post.account}]({post.post_url})：{post.summary}")
     lines.append("")
     return "\n".join(lines)
 
@@ -800,8 +876,9 @@ def main() -> int:
     now = datetime.now(TZ)
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
     results = build_sources(now)
-    HTML_OUT.write_text(render_html(results, now), encoding="utf-8")
-    MD_OUT.write_text(render_markdown(results, now), encoding="utf-8")
+    instagram_posts = build_instagram_posts(now)
+    HTML_OUT.write_text(render_html(results, instagram_posts, now), encoding="utf-8")
+    MD_OUT.write_text(render_markdown(results, instagram_posts, now), encoding="utf-8")
     print(f"Updated {HTML_OUT}")
     print(f"Updated {MD_OUT}")
     return 0

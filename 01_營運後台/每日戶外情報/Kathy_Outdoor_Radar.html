@@ -60,8 +60,11 @@
     .feedback-button[data-action="post"] { background: var(--blue); }
     .feedback-button[data-action="irrelevant"] { background: #f0f0f0; color: #555; }
     .account-grid { display: grid; gap: 12px; }
-    .account-card { border: 1px solid var(--line); border-radius: 8px; padding: 14px; display: grid; grid-template-columns: 58px minmax(0, 1fr) minmax(180px, .35fr) auto; gap: 14px; align-items: start; }
+    .account-card { border: 1px solid var(--line); border-radius: 8px; padding: 14px; display: grid; grid-template-columns: 58px minmax(0, 1fr) minmax(220px, .32fr) auto; gap: 14px; align-items: start; }
     .avatar-fallback { width: 48px; height: 48px; border: 1px solid var(--text); border-radius: 50%; display: grid; place-items: center; font-weight: 800; }
+    .ig-actions { display: grid; gap: 8px; }
+    .secondary-link { background: #fff; color: var(--text); }
+    .account-feedback { grid-column: 2 / -1; }
     .feedback-panel { border: 1px solid var(--line); border-radius: 8px; padding: 16px; }
     .toast { position: fixed; right: 16px; bottom: 16px; background: #111; color: #fff; padding: 10px 12px; border-radius: 6px; opacity: 0; transform: translateY(8px); transition: .2s ease; }
     .toast[data-show="true"] { opacity: 1; transform: translateY(0); }
@@ -93,26 +96,26 @@
 <button class="filter-button" type="button" data-filter="likeshop" aria-pressed="false">GQ LikeShop</button>
 <button class="filter-button" type="button" data-filter="material" aria-pressed="false">材質 / 規範</button>
 <button class="filter-button" type="button" data-filter="accounts" aria-pressed="false">IG 帳號</button></div>
-        <p class="notice">更新時間：2026/07/02 10:17（台北時間）。雲端版只抓公開可驗證來源；IG 不保存登入資料，無法確認日期時只保留帳號入口，不把舊貼文寫成今日最新。</p>
+        <p class="notice">更新時間：2026/07/02 10:35（台北時間）。網站來源每日收當日可確認發布的新文章，不再依主題挑選；IG 以公開 JSON 抓每個帳號最新非置頂貼文，若失敗會在卡片上標明。</p>
         <div class="source-feed">
           <section class="source-panel" data-source="outsiders">
             <div class="source-panel-header">
               <div>
                 <p class="eyebrow">Source</p>
                 <h3>OUTSiDERS</h3>
-                <div class="source-meta"><span class="pill">戶外文化</span><span class="pill">機能品牌</span><span class="pill">男女皆可</span></div>
+                <div class="source-meta"><span class="pill">每日新文章</span><span class="pill">全收</span><span class="pill">不挑選</span></div>
               </div>
-              <p>戶外文化、戶外產業、機能品牌與台灣山林議題。</p>
+              <p>每日收當日可確認發布日期的新文章；不再依主題幫 Kathy 排除。</p>
             </div>
             <div class="source-grid">
-              <article class="article-card" data-id="outsiders-https-www-outsiders-com-tw-post-50533-45cb2179" data-title="當登山熱潮降溫，當高山嚮導會不會很辛苦？嚮導現身說法" data-tags="OUTSiDERS,登山,全性別">
-                <div class="article-image"><img src="https://www.outsiders.com.tw/wp-content/uploads/2026/06/cover-3.jpg" alt="當登山熱潮降溫，當高山嚮導會不會很辛苦？嚮導現身說法 來源圖片" loading="lazy"></div>
+              <article class="article-card" data-id="outsiders-fallback" data-title="今日暫無可公開確認的新文章" data-tags="OUTSiDERS,待確認">
+                <div class="article-image article-image-empty"><span>NO IMAGE</span></div>
                 <div class="article-body">
-                  <div class="meta-row"><span class="pill">OUTSiDERS</span><span class="pill">2026/07/01｜1 天前</span><span class="pill">OUTSiDERS</span><span class="pill">登山</span><span class="pill">全性別</span></div>
-                  <h4>當登山熱潮降溫，當高山嚮導會不會很辛苦？嚮導現身說法</h4>
-                  <p>近年來，台灣山林經歷了一場猶如雲霄飛車般的變化。疫情期間因國境封鎖，無法出國的民眾蜂擁入山，將原本寧靜的高山炒… 這篇文章 當登山熱潮降溫，當高山嚮導會不會很辛苦？嚮導現身說法 最早出現於 OUTSiDERS - 戶外風…</p>
-                  <div class="use-case"><strong>可用角度</strong>可整理成戶外安全提醒、登山準備清單或門市裝備諮詢題材。</div>
-                  <a class="source-link" href="https://www.outsiders.com.tw/post/50533" target="_blank" rel="noopener noreferrer">閱讀來源</a>
+                  <div class="meta-row"><span class="pill">OUTSiDERS</span><span class="pill">待更新</span><span class="pill">OUTSiDERS</span><span class="pill">待確認</span></div>
+                  <h4>今日暫無可公開確認的新文章</h4>
+                  <p>今天 RSS 內沒有抓到當日發布的新文章。</p>
+                  <div class="use-case"><strong>可用角度</strong>保留來源入口，下一次排程會再檢查公開頁與 RSS。</div>
+                  <a class="source-link" href="https://www.outsiders.com.tw/" target="_blank" rel="noopener noreferrer">閱讀來源</a>
                   <div class="card-actions">
                     <button class="feedback-button" type="button" data-action="like">喜歡</button>
                     <button class="feedback-button" type="button" data-action="useful">有用</button>
@@ -129,11 +132,29 @@
               <div>
                 <p class="eyebrow">Source</p>
                 <h3>GQ Taiwan</h3>
-                <div class="source-meta"><span class="pill">男性 TA</span><span class="pill">鞋款</span><span class="pill">設計趨勢</span></div>
+                <div class="source-meta"><span class="pill">每日新文章</span><span class="pill">RSS 全收</span><span class="pill">不挑選</span></div>
               </div>
-              <p>男性 TA、城市風格、鞋款與機能設計趨勢。已排除純娛樂與低關聯影片。</p>
+              <p>每日收 GQ RSS 當日新文章；不再依鞋款、男性戶外或設計關鍵字排除。</p>
             </div>
             <div class="source-grid">
+              <article class="article-card" data-id="gq-https-www-gq-com-tw-article-f1-pierre-gasly-alpine-lac-639c0984" data-title="F1 車手 Pierre Gasly 親自上陣！Alpine × Lacoste 聯名鱷魚跑車 A290 Rallye，全車暗藏 290 隻鱷魚彩蛋" data-tags="GQ Taiwan,跑步,跑團">
+                <div class="article-image"><img src="https://media.gq.com.tw/photos/6a45c45bf74e238d8a0cb448/master/pass/Beware%20of%20the%20crocodile%20-%20Alpine%20A290%20Rallye%20(2).jpg" alt="F1 車手 Pierre Gasly 親自上陣！Alpine × Lacoste 聯名鱷魚跑車 A290 Rallye，全車暗藏 290 隻鱷魚彩蛋 來源圖片" loading="lazy"></div>
+                <div class="article-body">
+                  <div class="meta-row"><span class="pill">GQ Taiwan</span><span class="pill">2026/07/02</span><span class="pill">GQ Taiwan</span><span class="pill">跑步</span><span class="pill">跑團</span></div>
+                  <h4>F1 車手 Pierre Gasly 親自上陣！Alpine × Lacoste 聯名鱷魚跑車 A290 Rallye，全車暗藏 290 隻鱷魚彩蛋</h4>
+                  <p>兩大法國工藝代表品牌 Alpine 與 Lacoste 攜手推出特別版賽車「Alpine A290 Rallye」。</p>
+                  <div class="use-case"><strong>可用角度</strong>可延伸成跑團活動、試穿鞋課表或跑者教育內容。</div>
+                  <a class="source-link" href="https://www.gq.com.tw/article/f1-pierre-gasly-alpine-lacoste-a290-rallye" target="_blank" rel="noopener noreferrer">閱讀來源</a>
+                  <div class="card-actions">
+                    <button class="feedback-button" type="button" data-action="like">喜歡</button>
+                    <button class="feedback-button" type="button" data-action="useful">有用</button>
+                    <button class="feedback-button" type="button" data-action="product">可用於選品</button>
+                    <button class="feedback-button" type="button" data-action="post">想做成貼文</button>
+                    <button class="feedback-button" type="button" data-action="irrelevant">不相關</button>
+                  </div>
+                </div>
+              </article>
+
               <article class="article-card" data-id="gq-https-www-gq-com-tw-article-62d3077b" data-title="哈蘭德球衣為何改名「Braut Haaland」？致敬母親姓氏，原來全家都是頂尖運動員！" data-tags="GQ Taiwan,男性 TA,機能服飾,設計趨勢">
                 <div class="article-image"><img src="https://media.gq.com.tw/photos/6a45c44cff593f30edc940e4/master/pass/2283565213" alt="哈蘭德球衣為何改名「Braut Haaland」？致敬母親姓氏，原來全家都是頂尖運動員！ 來源圖片" loading="lazy"></div>
                 <div class="article-body">
@@ -151,60 +172,6 @@
                   </div>
                 </div>
               </article>
-
-              <article class="article-card" data-id="gq-https-www-gq-com-tw-article-07ccd9dd" data-title="出國揮竿才過癮！從泰國曼谷到日本靜岡，盤點亞洲 6 大「高爾夫度假酒店」：世界級球場、養身溫泉、絕美海景全滿足" data-tags="GQ Taiwan">
-                <div class="article-image"><img src="https://media.gq.com.tw/photos/6a44cd521748ba470818ed68/master/pass/gallery_golf_fuji02.jpg" alt="出國揮竿才過癮！從泰國曼谷到日本靜岡，盤點亞洲 6 大「高爾夫度假酒店」：世界級球場、養身溫泉、絕美海景全滿足 來源圖片" loading="lazy"></div>
-                <div class="article-body">
-                  <div class="meta-row"><span class="pill">GQ Taiwan</span><span class="pill">2026/07/01｜1 天前</span><span class="pill">GQ Taiwan</span></div>
-                  <h4>出國揮竿才過癮！從泰國曼谷到日本靜岡，盤點亞洲 6 大「高爾夫度假酒店」：世界級球場、養身溫泉、絕美海景全滿足</h4>
-                  <p>亞洲最知名高爾夫球場一次看！</p>
-                  <div class="use-case"><strong>可用角度</strong>可作為 OUTDOOR MAN 社群選題、部落格題材或商品溝通角度。</div>
-                  <a class="source-link" href="https://www.gq.com.tw/article/亞洲高爾夫球度假酒店" target="_blank" rel="noopener noreferrer">閱讀來源</a>
-                  <div class="card-actions">
-                    <button class="feedback-button" type="button" data-action="like">喜歡</button>
-                    <button class="feedback-button" type="button" data-action="useful">有用</button>
-                    <button class="feedback-button" type="button" data-action="product">可用於選品</button>
-                    <button class="feedback-button" type="button" data-action="post">想做成貼文</button>
-                    <button class="feedback-button" type="button" data-action="irrelevant">不相關</button>
-                  </div>
-                </div>
-              </article>
-
-              <article class="article-card" data-id="gq-https-www-gq-com-tw-article-db4e96ff" data-title="一篇介紹馬德拉斯格紋與南亞傳統男裝「籠基」是什麼？為什麼連 Vivienne Westwood、Ralph Lauren 等品牌都愛用！" data-tags="GQ Taiwan,男性 TA,機能服飾,設計趨勢">
-                <div class="article-image"><img src="https://media.gq.com.tw/photos/6a3bb2fa5d13424cc54e6b74/master/pass/Top2.jpg" alt="一篇介紹馬德拉斯格紋與南亞傳統男裝「籠基」是什麼？為什麼連 Vivienne Westwood、Ralph Lauren 等品牌都愛用！ 來源圖片" loading="lazy"></div>
-                <div class="article-body">
-                  <div class="meta-row"><span class="pill">GQ Taiwan</span><span class="pill">2026/07/01｜1 天前</span><span class="pill">GQ Taiwan</span><span class="pill">男性 TA</span><span class="pill">機能服飾</span><span class="pill">設計趨勢</span></div>
-                  <h4>一篇介紹馬德拉斯格紋與南亞傳統男裝「籠基」是什麼？為什麼連 Vivienne Westwood、Ralph Lauren 等品牌都愛用！</h4>
-                  <p>曾經象徵勞動階級與男性氣概的服裝元素，如今卻成為秀台上的視覺核心。</p>
-                  <div class="use-case"><strong>可用角度</strong>可觀察男性戶外風格與機能穿搭語言，支援社群與選品靈感。</div>
-                  <a class="source-link" href="https://www.gq.com.tw/article/馬德拉斯格紋" target="_blank" rel="noopener noreferrer">閱讀來源</a>
-                  <div class="card-actions">
-                    <button class="feedback-button" type="button" data-action="like">喜歡</button>
-                    <button class="feedback-button" type="button" data-action="useful">有用</button>
-                    <button class="feedback-button" type="button" data-action="product">可用於選品</button>
-                    <button class="feedback-button" type="button" data-action="post">想做成貼文</button>
-                    <button class="feedback-button" type="button" data-action="irrelevant">不相關</button>
-                  </div>
-                </div>
-              </article>
-
-              <article class="article-card" data-id="gq-https-www-gq-com-tw-article-nordic-design-furniture-wo-f4434620" data-title="錯過 2026 3daysofdesign 也沒關係！十大焦點品牌 X 20 件新品一次看，把最純粹的北歐設計帶回家！" data-tags="GQ Taiwan">
-                <div class="article-image"><img src="https://media.gq.com.tw/photos/6a44bf8d8ab4f628652ac949/master/pass/%E4%BD%A0%E7%9A%84%E6%AE%B5%E8%90%BD%E6%96%87%E5%AD%97%20(9).gif" alt="錯過 2026 3daysofdesign 也沒關係！十大焦點品牌 X 20 件新品一次看，把最純粹的北歐設計帶回家！ 來源圖片" loading="lazy"></div>
-                <div class="article-body">
-                  <div class="meta-row"><span class="pill">GQ Taiwan</span><span class="pill">2026/07/01｜1 天前</span><span class="pill">GQ Taiwan</span></div>
-                  <h4>錯過 2026 3daysofdesign 也沒關係！十大焦點品牌 X 20 件新品一次看，把最純粹的北歐設計帶回家！</h4>
-                  <p>設計展再精采，不過為期三天或一週，更重要的是這些厲害又美型的家具是否有機會進駐你我家中。2026 3daysofdesign 雖已落幕，但有許多值得關注的北歐設計品牌與焦點新品，GQ將為大家一一盤點！</p>
-                  <div class="use-case"><strong>可用角度</strong>可觀察男性戶外風格與機能穿搭語言，支援社群與選品靈感。</div>
-                  <a class="source-link" href="https://www.gq.com.tw/article/nordic-design-furniture-worth-bringing-home" target="_blank" rel="noopener noreferrer">閱讀來源</a>
-                  <div class="card-actions">
-                    <button class="feedback-button" type="button" data-action="like">喜歡</button>
-                    <button class="feedback-button" type="button" data-action="useful">有用</button>
-                    <button class="feedback-button" type="button" data-action="product">可用於選品</button>
-                    <button class="feedback-button" type="button" data-action="post">想做成貼文</button>
-                    <button class="feedback-button" type="button" data-action="irrelevant">不相關</button>
-                  </div>
-                </div>
-              </article>
             </div>
           </section>
           <section class="source-panel" data-source="hiking">
@@ -212,17 +179,17 @@
               <div>
                 <p class="eyebrow">Source</p>
                 <h3>健行筆記</h3>
-                <div class="source-meta"><span class="pill">登山知識</span><span class="pill">戶外安全</span><span class="pill">路線</span></div>
+                <div class="source-meta"><span class="pill">每日新文章</span><span class="pill">首頁最新</span><span class="pill">不挑選</span></div>
               </div>
-              <p>台灣登山路線、戶外安全、健行知識與活動消息。</p>
+              <p>公開首頁當日新文章與首頁最新項目；不再依主題挑選。</p>
             </div>
             <div class="source-grid">
-              <article class="article-card" data-id="hiking-fallback" data-title="本週暫無可公開確認的新訊" data-tags="健行筆記,待確認">
+              <article class="article-card" data-id="hiking-fallback" data-title="今日暫無可公開確認的新文章" data-tags="健行筆記,待確認">
                 <div class="article-image article-image-empty"><span>NO IMAGE</span></div>
                 <div class="article-body">
                   <div class="meta-row"><span class="pill">健行筆記</span><span class="pill">待更新</span><span class="pill">健行筆記</span><span class="pill">待確認</span></div>
-                  <h4>本週暫無可公開確認的新訊</h4>
-                  <p>公開首頁沒有抓到當月可確認的新文章。</p>
+                  <h4>今日暫無可公開確認的新文章</h4>
+                  <p>公開首頁沒有抓到當日可確認的新文章。</p>
                   <div class="use-case"><strong>可用角度</strong>保留來源入口，下一次排程會再檢查公開頁與 RSS。</div>
                   <a class="source-link" href="https://hiking.biji.co/" target="_blank" rel="noopener noreferrer">閱讀來源</a>
                   <div class="card-actions">
@@ -241,15 +208,15 @@
               <div>
                 <p class="eyebrow">Source</p>
                 <h3>運動筆記</h3>
-                <div class="source-meta"><span class="pill">鞋款</span><span class="pill">跑團</span><span class="pill">訓練</span></div>
+                <div class="source-meta"><span class="pill">每日新文章</span><span class="pill">首頁最新</span><span class="pill">不挑選</span></div>
               </div>
-              <p>跑鞋新品、品牌動態、跑步訓練、賽事與跑團話題。</p>
+              <p>公開首頁當日新文章與首頁最新項目；不再只挑跑鞋或訓練文章。</p>
             </div>
             <div class="source-grid">
               <article class="article-card" data-id="running-https-running-biji-co-index-php-q-news-act-info-id-114-0e2e9810" data-title="【訓練】馬拉松只需要慢跑？Joe Klecker 分享 3 個速度訓練技巧，讓全馬配速變得更輕鬆" data-tags="運動筆記,跑步,跑團">
                 <div class="article-image"><img src="https://cdntwrunning.biji.co/600_f3c2aacdaf795a60bd2b76a01012f7d5.png" alt="【訓練】馬拉松只需要慢跑？Joe Klecker 分享 3 個速度訓練技巧，讓全馬配速變得更輕鬆 來源圖片" loading="lazy"></div>
                 <div class="article-body">
-                  <div class="meta-row"><span class="pill">運動筆記</span><span class="pill">公開首頁最新</span><span class="pill">運動筆記</span><span class="pill">跑步</span><span class="pill">跑團</span></div>
+                  <div class="meta-row"><span class="pill">運動筆記</span><span class="pill">公開首頁最新｜日期待確認</span><span class="pill">運動筆記</span><span class="pill">跑步</span><span class="pill">跑團</span></div>
                   <h4>【訓練】馬拉松只需要慢跑？Joe Klecker 分享 3 個速度訓練技巧，讓全馬配速變得更輕鬆</h4>
                   <p>【訓練】馬拉松只需要慢跑？Joe Klecker 分享 3 個速度訓練技巧，讓全馬配速變得更輕鬆</p>
                   <div class="use-case"><strong>可用角度</strong>可延伸成跑團活動、試穿鞋課表或跑者教育內容。</div>
@@ -264,10 +231,46 @@
                 </div>
               </article>
 
+              <article class="article-card" data-id="running-https-running-biji-co-index-php-q-news-act-info-id-114-6c9a3959" data-title="【話題】24小時陡升 3000 公尺！凱特王妃抗癌後挑戰英「國家三峰挑戰」，為癌症慈善機構籌款" data-tags="運動筆記">
+                <div class="article-image"><img src="https://cdntwrunning.biji.co/600_97afbe4ad645e5f61011fde605476cfa.png" alt="【話題】24小時陡升 3000 公尺！凱特王妃抗癌後挑戰英「國家三峰挑戰」，為癌症慈善機構籌款 來源圖片" loading="lazy"></div>
+                <div class="article-body">
+                  <div class="meta-row"><span class="pill">運動筆記</span><span class="pill">公開首頁最新｜日期待確認</span><span class="pill">運動筆記</span></div>
+                  <h4>【話題】24小時陡升 3000 公尺！凱特王妃抗癌後挑戰英「國家三峰挑戰」，為癌症慈善機構籌款</h4>
+                  <p>【話題】24小時陡升 3000 公尺！凱特王妃抗癌後挑戰英「國家三峰挑戰」，為癌症慈善機構籌款</p>
+                  <div class="use-case"><strong>可用角度</strong>可作為 OUTDOOR MAN 社群選題、部落格題材或商品溝通角度。</div>
+                  <a class="source-link" href="https://running.biji.co/index.php?q=news&amp;act=info&amp;id=114274&amp;subtitle=【話題】24小時陡升 3000 公尺！凱特王妃抗癌後挑戰英「國家三峰挑戰」，為癌症慈善機構籌款" target="_blank" rel="noopener noreferrer">閱讀來源</a>
+                  <div class="card-actions">
+                    <button class="feedback-button" type="button" data-action="like">喜歡</button>
+                    <button class="feedback-button" type="button" data-action="useful">有用</button>
+                    <button class="feedback-button" type="button" data-action="product">可用於選品</button>
+                    <button class="feedback-button" type="button" data-action="post">想做成貼文</button>
+                    <button class="feedback-button" type="button" data-action="irrelevant">不相關</button>
+                  </div>
+                </div>
+              </article>
+
+              <article class="article-card" data-id="running-https-running-biji-co-index-php-q-news-act-info-id-114-f80cd2d3" data-title="【賽事】巴黎鑽石聯賽》Audrey Werro 800公尺寫1:53.80再刷個人最佳向世界紀錄逼近" data-tags="運動筆記">
+                <div class="article-image"><img src="https://cdntwrunning.biji.co/600_43bc4ff293e269f8340e8af4818c4576.jpg" alt="【賽事】巴黎鑽石聯賽》Audrey Werro 800公尺寫1:53.80再刷個人最佳向世界紀錄逼近 來源圖片" loading="lazy"></div>
+                <div class="article-body">
+                  <div class="meta-row"><span class="pill">運動筆記</span><span class="pill">公開首頁最新｜日期待確認</span><span class="pill">運動筆記</span></div>
+                  <h4>【賽事】巴黎鑽石聯賽》Audrey Werro 800公尺寫1:53.80再刷個人最佳向世界紀錄逼近</h4>
+                  <p>【賽事】巴黎鑽石聯賽》Audrey Werro 800公尺寫1:53.80再刷個人最佳向世界紀錄逼近</p>
+                  <div class="use-case"><strong>可用角度</strong>可作為 OUTDOOR MAN 社群選題、部落格題材或商品溝通角度。</div>
+                  <a class="source-link" href="https://running.biji.co/index.php?q=news&amp;act=info&amp;id=114273&amp;subtitle=【賽事】巴黎鑽石聯賽》Audrey Werro 800公尺寫1:53.80再刷個人最佳向世界紀錄逼近" target="_blank" rel="noopener noreferrer">閱讀來源</a>
+                  <div class="card-actions">
+                    <button class="feedback-button" type="button" data-action="like">喜歡</button>
+                    <button class="feedback-button" type="button" data-action="useful">有用</button>
+                    <button class="feedback-button" type="button" data-action="product">可用於選品</button>
+                    <button class="feedback-button" type="button" data-action="post">想做成貼文</button>
+                    <button class="feedback-button" type="button" data-action="irrelevant">不相關</button>
+                  </div>
+                </div>
+              </article>
+
               <article class="article-card" data-id="running-https-running-biji-co-index-php-q-news-act-info-id-114-a1996e8b" data-title="【品牌動態】On發表新一代 Cloudboom Strike 2！LightSpray版本同步亮相！" data-tags="運動筆記,鞋款,男性 TA,女性 TA">
                 <div class="article-image"><img src="https://cdntwrunning.biji.co/600_da59c16ee30ffdccdaf9c95877e9997d.jpeg" alt="【品牌動態】On發表新一代 Cloudboom Strike 2！LightSpray版本同步亮相！ 來源圖片" loading="lazy"></div>
                 <div class="article-body">
-                  <div class="meta-row"><span class="pill">運動筆記</span><span class="pill">公開首頁最新</span><span class="pill">運動筆記</span><span class="pill">鞋款</span><span class="pill">男性 TA</span><span class="pill">女性 TA</span></div>
+                  <div class="meta-row"><span class="pill">運動筆記</span><span class="pill">公開首頁最新｜日期待確認</span><span class="pill">運動筆記</span><span class="pill">鞋款</span><span class="pill">男性 TA</span><span class="pill">女性 TA</span></div>
                   <h4>【品牌動態】On發表新一代 Cloudboom Strike 2！LightSpray版本同步亮相！</h4>
                   <p>【品牌動態】On發表新一代 Cloudboom Strike 2！LightSpray版本同步亮相！</p>
                   <div class="use-case"><strong>可用角度</strong>可轉成鞋款比較、門市試穿話術或跑者選鞋內容。</div>
@@ -285,7 +288,7 @@
               <article class="article-card" data-id="running-https-running-biji-co-index-php-q-news-act-info-id-114-084dc33f" data-title="【品牌動態】HOKA Clifton PRO登場！全新超臨界中底 挑戰高階日常訓練鞋市場" data-tags="運動筆記,鞋款,男性 TA,女性 TA">
                 <div class="article-image"><img src="https://cdntwrunning.biji.co/600_2b5b0907b47434824a09a5592fd6587d.jpeg" alt="【品牌動態】HOKA Clifton PRO登場！全新超臨界中底 挑戰高階日常訓練鞋市場 來源圖片" loading="lazy"></div>
                 <div class="article-body">
-                  <div class="meta-row"><span class="pill">運動筆記</span><span class="pill">公開首頁最新</span><span class="pill">運動筆記</span><span class="pill">鞋款</span><span class="pill">男性 TA</span><span class="pill">女性 TA</span></div>
+                  <div class="meta-row"><span class="pill">運動筆記</span><span class="pill">公開首頁最新｜日期待確認</span><span class="pill">運動筆記</span><span class="pill">鞋款</span><span class="pill">男性 TA</span><span class="pill">女性 TA</span></div>
                   <h4>【品牌動態】HOKA Clifton PRO登場！全新超臨界中底 挑戰高階日常訓練鞋市場</h4>
                   <p>【品牌動態】HOKA Clifton PRO登場！全新超臨界中底 挑戰高階日常訓練鞋市場</p>
                   <div class="use-case"><strong>可用角度</strong>可轉成鞋款比較、門市試穿話術或跑者選鞋內容。</div>
@@ -300,14 +303,122 @@
                 </div>
               </article>
 
+              <article class="article-card" data-id="running-https-running-biji-co-index-php-q-news-act-info-id-114-607792e5" data-title="【品牌動態】熱血球迷必朝聖「adidas 2026世界盃足球街區」盛大登場！引領球迷沉浸世足文化核心" data-tags="運動筆記">
+                <div class="article-image"><img src="https://cdntwrunning.biji.co/600_19aac62c8b231add6a9431fb2588dccd.jpeg" alt="【品牌動態】熱血球迷必朝聖「adidas 2026世界盃足球街區」盛大登場！引領球迷沉浸世足文化核心 來源圖片" loading="lazy"></div>
+                <div class="article-body">
+                  <div class="meta-row"><span class="pill">運動筆記</span><span class="pill">公開首頁最新｜日期待確認</span><span class="pill">運動筆記</span></div>
+                  <h4>【品牌動態】熱血球迷必朝聖「adidas 2026世界盃足球街區」盛大登場！引領球迷沉浸世足文化核心</h4>
+                  <p>【品牌動態】熱血球迷必朝聖「adidas 2026世界盃足球街區」盛大登場！引領球迷沉浸世足文化核心</p>
+                  <div class="use-case"><strong>可用角度</strong>可作為 OUTDOOR MAN 社群選題、部落格題材或商品溝通角度。</div>
+                  <a class="source-link" href="https://running.biji.co/index.php?q=news&amp;act=info&amp;id=114269&amp;subtitle=【品牌動態】熱血球迷必朝聖「adidas 2026世界盃足球街區」盛大登場！引領球迷沉浸世足文化核心" target="_blank" rel="noopener noreferrer">閱讀來源</a>
+                  <div class="card-actions">
+                    <button class="feedback-button" type="button" data-action="like">喜歡</button>
+                    <button class="feedback-button" type="button" data-action="useful">有用</button>
+                    <button class="feedback-button" type="button" data-action="product">可用於選品</button>
+                    <button class="feedback-button" type="button" data-action="post">想做成貼文</button>
+                    <button class="feedback-button" type="button" data-action="irrelevant">不相關</button>
+                  </div>
+                </div>
+              </article>
+
               <article class="article-card" data-id="running-https-running-biji-co-index-php-q-news-act-info-id-114-59bc1798" data-title="【品牌動態】SAUCONY TRIUMPH 24 經典再進化！ 革命性中底締造輕量緩震跑鞋新標準" data-tags="運動筆記,鞋款,男性 TA,女性 TA,跑步">
                 <div class="article-image"><img src="https://cdntwrunning.biji.co/600_aad36e2b7f39987723f39bd78701a231.jpg" alt="【品牌動態】SAUCONY TRIUMPH 24 經典再進化！ 革命性中底締造輕量緩震跑鞋新標準 來源圖片" loading="lazy"></div>
                 <div class="article-body">
-                  <div class="meta-row"><span class="pill">運動筆記</span><span class="pill">公開首頁最新</span><span class="pill">運動筆記</span><span class="pill">鞋款</span><span class="pill">男性 TA</span><span class="pill">女性 TA</span></div>
+                  <div class="meta-row"><span class="pill">運動筆記</span><span class="pill">公開首頁最新｜日期待確認</span><span class="pill">運動筆記</span><span class="pill">鞋款</span><span class="pill">男性 TA</span><span class="pill">女性 TA</span></div>
                   <h4>【品牌動態】SAUCONY TRIUMPH 24 經典再進化！ 革命性中底締造輕量緩震跑鞋新標準</h4>
                   <p>【品牌動態】SAUCONY TRIUMPH 24 經典再進化！ 革命性中底締造輕量緩震跑鞋新標準</p>
                   <div class="use-case"><strong>可用角度</strong>可轉成鞋款比較、門市試穿話術或跑者選鞋內容。</div>
                   <a class="source-link" href="https://running.biji.co/index.php?q=news&amp;act=info&amp;id=114263&amp;subtitle=【品牌動態】SAUCONY TRIUMPH 24 經典再進化！ 革命性中底締造輕量緩震跑鞋新標準" target="_blank" rel="noopener noreferrer">閱讀來源</a>
+                  <div class="card-actions">
+                    <button class="feedback-button" type="button" data-action="like">喜歡</button>
+                    <button class="feedback-button" type="button" data-action="useful">有用</button>
+                    <button class="feedback-button" type="button" data-action="product">可用於選品</button>
+                    <button class="feedback-button" type="button" data-action="post">想做成貼文</button>
+                    <button class="feedback-button" type="button" data-action="irrelevant">不相關</button>
+                  </div>
+                </div>
+              </article>
+
+              <article class="article-card" data-id="running-https-running-biji-co-index-php-q-news-act-info-id-114-4fe1d2f5" data-title="【品牌動態】PURELY FAST純粹新美學 曹佑寧跨界演繹 DEVIATE PURE NITRO™" data-tags="運動筆記">
+                <div class="article-image"><img src="https://cdntwrunning.biji.co/600_1add95b4c9aa9a6cdefe4e2ffe0f59c4.jpeg" alt="【品牌動態】PURELY FAST純粹新美學 曹佑寧跨界演繹 DEVIATE PURE NITRO™ 來源圖片" loading="lazy"></div>
+                <div class="article-body">
+                  <div class="meta-row"><span class="pill">運動筆記</span><span class="pill">公開首頁最新｜日期待確認</span><span class="pill">運動筆記</span></div>
+                  <h4>【品牌動態】PURELY FAST純粹新美學 曹佑寧跨界演繹 DEVIATE PURE NITRO™</h4>
+                  <p>【品牌動態】PURELY FAST純粹新美學 曹佑寧跨界演繹 DEVIATE PURE NITRO™</p>
+                  <div class="use-case"><strong>可用角度</strong>可作為 OUTDOOR MAN 社群選題、部落格題材或商品溝通角度。</div>
+                  <a class="source-link" href="https://running.biji.co/index.php?q=news&amp;act=info&amp;id=114261&amp;subtitle=【品牌動態】PURELY FAST純粹新美學 曹佑寧跨界演繹 DEVIATE PURE NITRO™" target="_blank" rel="noopener noreferrer">閱讀來源</a>
+                  <div class="card-actions">
+                    <button class="feedback-button" type="button" data-action="like">喜歡</button>
+                    <button class="feedback-button" type="button" data-action="useful">有用</button>
+                    <button class="feedback-button" type="button" data-action="product">可用於選品</button>
+                    <button class="feedback-button" type="button" data-action="post">想做成貼文</button>
+                    <button class="feedback-button" type="button" data-action="irrelevant">不相關</button>
+                  </div>
+                </div>
+              </article>
+
+              <article class="article-card" data-id="running-https-running-biji-co-index-php-q-review-act-detail-id-c974412e" data-title="蛤？什麼是撞牆？" data-tags="運動筆記">
+                <div class="article-image"><img src="https://cdntwrunning.biji.co/600_9b0b578d20f2d6d0f7ba9e66cc4cbbef.jpg" alt="蛤？什麼是撞牆？ 來源圖片" loading="lazy"></div>
+                <div class="article-body">
+                  <div class="meta-row"><span class="pill">運動筆記</span><span class="pill">公開首頁最新｜日期待確認</span><span class="pill">運動筆記</span></div>
+                  <h4>蛤？什麼是撞牆？</h4>
+                  <p>蛤？什麼是撞牆？</p>
+                  <div class="use-case"><strong>可用角度</strong>可作為 OUTDOOR MAN 社群選題、部落格題材或商品溝通角度。</div>
+                  <a class="source-link" href="https://running.biji.co/index.php?q=review&amp;act=detail&amp;id=58402&amp;subtitle=蛤？什麼是撞牆？" target="_blank" rel="noopener noreferrer">閱讀來源</a>
+                  <div class="card-actions">
+                    <button class="feedback-button" type="button" data-action="like">喜歡</button>
+                    <button class="feedback-button" type="button" data-action="useful">有用</button>
+                    <button class="feedback-button" type="button" data-action="product">可用於選品</button>
+                    <button class="feedback-button" type="button" data-action="post">想做成貼文</button>
+                    <button class="feedback-button" type="button" data-action="irrelevant">不相關</button>
+                  </div>
+                </div>
+              </article>
+
+              <article class="article-card" data-id="running-https-running-biji-co-index-php-q-review-act-detail-id-68cac29b" data-title="2026 名古屋女子馬 - 出發篇" data-tags="運動筆記">
+                <div class="article-image"><img src="https://cdntwrunning.biji.co/600_d779aa8d4475f8775e3ec55f332a0c3d.jpeg" alt="2026 名古屋女子馬 - 出發篇 來源圖片" loading="lazy"></div>
+                <div class="article-body">
+                  <div class="meta-row"><span class="pill">運動筆記</span><span class="pill">公開首頁最新｜日期待確認</span><span class="pill">運動筆記</span></div>
+                  <h4>2026 名古屋女子馬 - 出發篇</h4>
+                  <p>2026 名古屋女子馬 - 出發篇</p>
+                  <div class="use-case"><strong>可用角度</strong>可作為 OUTDOOR MAN 社群選題、部落格題材或商品溝通角度。</div>
+                  <a class="source-link" href="https://running.biji.co/index.php?q=review&amp;act=detail&amp;id=58398&amp;subtitle=2026 名古屋女子馬 - 出發篇" target="_blank" rel="noopener noreferrer">閱讀來源</a>
+                  <div class="card-actions">
+                    <button class="feedback-button" type="button" data-action="like">喜歡</button>
+                    <button class="feedback-button" type="button" data-action="useful">有用</button>
+                    <button class="feedback-button" type="button" data-action="product">可用於選品</button>
+                    <button class="feedback-button" type="button" data-action="post">想做成貼文</button>
+                    <button class="feedback-button" type="button" data-action="irrelevant">不相關</button>
+                  </div>
+                </div>
+              </article>
+
+              <article class="article-card" data-id="running-https-running-biji-co-index-php-q-review-act-detail-id-a2dab85a" data-title="免費訓練工具介紹--- Intervals.icu" data-tags="運動筆記">
+                <div class="article-image"><img src="https://cdntwrunning.biji.co/600_55c5c66d0683108ebc35cb6d8758d577.png" alt="免費訓練工具介紹--- Intervals.icu 來源圖片" loading="lazy"></div>
+                <div class="article-body">
+                  <div class="meta-row"><span class="pill">運動筆記</span><span class="pill">公開首頁最新｜日期待確認</span><span class="pill">運動筆記</span></div>
+                  <h4>免費訓練工具介紹--- Intervals.icu</h4>
+                  <p>免費訓練工具介紹--- Intervals.icu</p>
+                  <div class="use-case"><strong>可用角度</strong>可延伸成跑團活動、試穿鞋課表或跑者教育內容。</div>
+                  <a class="source-link" href="https://running.biji.co/index.php?q=review&amp;act=detail&amp;id=58397&amp;subtitle=免費訓練工具介紹--- Intervals.icu" target="_blank" rel="noopener noreferrer">閱讀來源</a>
+                  <div class="card-actions">
+                    <button class="feedback-button" type="button" data-action="like">喜歡</button>
+                    <button class="feedback-button" type="button" data-action="useful">有用</button>
+                    <button class="feedback-button" type="button" data-action="product">可用於選品</button>
+                    <button class="feedback-button" type="button" data-action="post">想做成貼文</button>
+                    <button class="feedback-button" type="button" data-action="irrelevant">不相關</button>
+                  </div>
+                </div>
+              </article>
+
+              <article class="article-card" data-id="running-https-running-biji-co-index-php-q-news-act-info-id-114-e6779632" data-title="【訓練】跑者肌力訓練該練哪？ 8 大關鍵肌群提升你的跑步效率與馬拉松表現" data-tags="運動筆記,跑步,跑團">
+                <div class="article-image"><img src="https://cdntwrunning.biji.co/600_9c2ce6d4ddfc649c7061fecb785a84e4.png" alt="【訓練】跑者肌力訓練該練哪？ 8 大關鍵肌群提升你的跑步效率與馬拉松表現 來源圖片" loading="lazy"></div>
+                <div class="article-body">
+                  <div class="meta-row"><span class="pill">運動筆記</span><span class="pill">公開首頁最新｜日期待確認</span><span class="pill">運動筆記</span><span class="pill">跑步</span><span class="pill">跑團</span></div>
+                  <h4>【訓練】跑者肌力訓練該練哪？ 8 大關鍵肌群提升你的跑步效率與馬拉松表現</h4>
+                  <p>【訓練】跑者肌力訓練該練哪？ 8 大關鍵肌群提升你的跑步效率與馬拉松表現</p>
+                  <div class="use-case"><strong>可用角度</strong>可延伸成跑團活動、試穿鞋課表或跑者教育內容。</div>
+                  <a class="source-link" href="https://running.biji.co/index.php?q=news&amp;act=info&amp;id=114257&amp;subtitle=【訓練】跑者肌力訓練該練哪？ 8 大關鍵肌群提升你的跑步效率與馬拉松表現" target="_blank" rel="noopener noreferrer">閱讀來源</a>
                   <div class="card-actions">
                     <button class="feedback-button" type="button" data-action="like">喜歡</button>
                     <button class="feedback-button" type="button" data-action="useful">有用</button>
@@ -326,15 +437,15 @@
                 <h3>GQ LikeShop</h3>
                 <div class="source-meta"><span class="pill">待確認</span><span class="pill">不硬補</span></div>
               </div>
-              <p>只收可確認日期與文章型內容；影片或無法確認日期時不放今日文章牆。</p>
+              <p>若公開頁能確認當日新內容才列入；無法確認時只保留入口。</p>
             </div>
             <div class="source-grid">
-              <article class="article-card" data-id="likeshop-fallback" data-title="本週暫無可公開確認的新訊" data-tags="GQ LikeShop,待確認">
+              <article class="article-card" data-id="likeshop-fallback" data-title="今日暫無可公開確認的新文章" data-tags="GQ LikeShop,待確認">
                 <div class="article-image article-image-empty"><span>NO IMAGE</span></div>
                 <div class="article-body">
                   <div class="meta-row"><span class="pill">GQ LikeShop</span><span class="pill">待更新</span><span class="pill">GQ LikeShop</span><span class="pill">待確認</span></div>
-                  <h4>本週暫無可公開確認的新訊</h4>
-                  <p>雲端版未抓到可公開確認日期的 LikeShop 文章，避免把影片或舊內容誤放成今日新聞。</p>
+                  <h4>今日暫無可公開確認的新文章</h4>
+                  <p>雲端版未抓到可公開確認日期的 LikeShop 當日文章，避免把舊內容誤放成今日新聞。</p>
                   <div class="use-case"><strong>可用角度</strong>保留來源入口，下一次排程會再檢查公開頁與 RSS。</div>
                   <a class="source-link" href="https://likeshop.me/gqtaiwan" target="_blank" rel="noopener noreferrer">閱讀來源</a>
                   <div class="card-actions">
@@ -358,12 +469,12 @@
               <p>歐盟、ECHA、Textile Exchange、ISPO 等公開來源的新規範與材料趨勢。</p>
             </div>
             <div class="source-grid">
-              <article class="article-card" data-id="material-fallback" data-title="本週暫無可公開確認的新訊" data-tags="材質 / 規範,待確認">
+              <article class="article-card" data-id="material-fallback" data-title="今日暫無可公開確認的新文章" data-tags="材質 / 規範,待確認">
                 <div class="article-image article-image-empty"><span>NO IMAGE</span></div>
                 <div class="article-body">
                   <div class="meta-row"><span class="pill">材質 / 規範</span><span class="pill">待更新</span><span class="pill">材質 / 規範</span><span class="pill">待確認</span></div>
-                  <h4>本週暫無可公開確認的新訊</h4>
-                  <p>本次公開來源未抓到當月新的材質或歐盟規範文章；舊法規不放進今日首頁。</p>
+                  <h4>今日暫無可公開確認的新文章</h4>
+                  <p>本次公開來源未抓到當日新的材質或歐盟規範文章；舊法規不放進今日首頁。</p>
                   <div class="use-case"><strong>可用角度</strong>保留來源入口，下一次排程會再檢查公開頁與 RSS。</div>
                   <a class="source-link" href="https://echa.europa.eu/" target="_blank" rel="noopener noreferrer">閱讀來源</a>
                   <div class="card-actions">
@@ -383,153 +494,270 @@
         <div class="source-panel-header">
           <div>
             <p class="eyebrow">Instagram accounts</p>
-            <h3>IG 帳號最新動態</h3>
-            <div class="source-meta"><span class="pill">不存登入資料</span><span class="pill">文字版</span></div>
+            <h3>IG 帳號最新貼文</h3>
+            <div class="source-meta"><span class="pill">公開 JSON</span><span class="pill">每帳號 1 則</span><span class="pill">不下載圖片</span></div>
           </div>
-          <p>雲端排程不使用 Kathy 的 IG cookie。這區保留帳號入口與追蹤角度；需要日期確認的貼文，後續可用登入瀏覽器補抓。</p>
+          <p>雲端排程不使用 Kathy 的 IG cookie；會抓每個帳號目前公開可讀的最新非置頂貼文，保留日期、摘要與原貼文連結。</p>
         </div>
         <div class="account-grid">
-          <article class="account-card">
+          <article class="account-card" data-id="ig-papersky-tw-dz7cpodh6er-112a823a">
             <div class="avatar-fallback">PT</div>
             <div>
-              <div class="meta-row"><span class="pill">Instagram</span><span class="pill">雲端公開版</span><span class="pill">需公開驗證</span></div>
+              <div class="meta-row"><span class="pill">Instagram</span><span class="pill">@papersky.tw</span><span class="pill">2026/06/23</span><span class="pill">最新貼文較舊</span></div>
               <h4>PAPERSKY.TW</h4>
-              <p>旅遊企劃、戶外行旅、活動報名。雲端版不存 IG cookie；若公開頁無法確認最新日期，就不把舊貼文寫成今天最新。</p>
+              <p>﹏vol.2 島波海道 「DREAMY」新刊活動一覽 PAPERSKY TAIWAN Evants &amp; Selections 隨著新刊上市，系列活動從台日交流活動到選品、秋季騎行踏查，從一路延續到下半年，將如夢一般的島波海道以各種方式呈現給讀者✨ ▌June-October 島波海道系列分享會 將不定期舉辦島波海道「DREAMY」系列分享會，從首場品茶會到後…</p>
             </div>
-            <div class="use-case"><strong>可用角度</strong>保留帳號入口，後續可用登入瀏覽器手動補抓最新貼文日期。</div>
-            <a class="source-link ig-post-link" href="https://www.instagram.com/papersky.tw/" rel="noopener noreferrer">查看帳號</a>
+            <div class="use-case"><strong>可用角度</strong>旅遊企劃、戶外行旅、活動報名。形式：輪播。</div>
+            <div class="ig-actions">
+              <a class="source-link ig-post-link" href="https://www.instagram.com/p/DZ7cPODH6eR/" rel="noopener noreferrer">查看貼文</a>
+              <a class="source-link secondary-link" href="https://www.instagram.com/papersky.tw/" rel="noopener noreferrer">查看帳號</a>
+            </div>
+            <div class="card-actions account-feedback">
+              <button class="feedback-button" type="button" data-action="like">喜歡</button>
+              <button class="feedback-button" type="button" data-action="useful">有用</button>
+              <button class="feedback-button" type="button" data-action="post">想做成貼文</button>
+              <button class="feedback-button" type="button" data-action="irrelevant">不相關</button>
+            </div>
           </article>
 
-          <article class="account-card">
+          <article class="account-card" data-id="ig-amouter-dywzynadbfe-6a0824db">
             <div class="avatar-fallback">A</div>
             <div>
-              <div class="meta-row"><span class="pill">Instagram</span><span class="pill">雲端公開版</span><span class="pill">需公開驗證</span></div>
+              <div class="meta-row"><span class="pill">Instagram</span><span class="pill">@amouter</span><span class="pill">2026/05/25</span><span class="pill">最新貼文較舊</span></div>
               <h4>AMOUTER</h4>
-              <p>同行選品、鞋款、門市活動。雲端版不存 IG cookie；若公開頁無法確認最新日期，就不把舊貼文寫成今天最新。</p>
+              <p>✸ #戶外店員新品帶你看｜#Patagonia #GRAMICCI 棉T系列 ✸ 有些衣服，第一次穿並不會特別驚艷， 但你會發現，自己越來越常穿它。 這次到貨的棉 T 是兩大品牌： Patagonia 強調有機棉帶來的柔軟與舒適感； Gramicci 則是中磅數布料挺度搭配乾爽手感。 從復古滾邊、經典 Logo， 到帶有美式戶外感的圖像設計， 都很適合夏天直…</p>
             </div>
-            <div class="use-case"><strong>可用角度</strong>保留帳號入口，後續可用登入瀏覽器手動補抓最新貼文日期。</div>
-            <a class="source-link ig-post-link" href="https://www.instagram.com/amouter/" rel="noopener noreferrer">查看帳號</a>
+            <div class="use-case"><strong>可用角度</strong>同行選品、鞋款、門市活動。形式：輪播。</div>
+            <div class="ig-actions">
+              <a class="source-link ig-post-link" href="https://www.instagram.com/p/DYwzYnaDbFE/" rel="noopener noreferrer">查看貼文</a>
+              <a class="source-link secondary-link" href="https://www.instagram.com/amouter/" rel="noopener noreferrer">查看帳號</a>
+            </div>
+            <div class="card-actions account-feedback">
+              <button class="feedback-button" type="button" data-action="like">喜歡</button>
+              <button class="feedback-button" type="button" data-action="useful">有用</button>
+              <button class="feedback-button" type="button" data-action="post">想做成貼文</button>
+              <button class="feedback-button" type="button" data-action="irrelevant">不相關</button>
+            </div>
           </article>
 
-          <article class="account-card">
+          <article class="account-card" data-id="ig-gqtaiwan-dz9fzore1wz-c3c74014">
             <div class="avatar-fallback">GT</div>
             <div>
-              <div class="meta-row"><span class="pill">Instagram</span><span class="pill">雲端公開版</span><span class="pill">需公開驗證</span></div>
+              <div class="meta-row"><span class="pill">Instagram</span><span class="pill">@gqtaiwan</span><span class="pill">2026/06/24</span><span class="pill">最新貼文較舊</span></div>
               <h4>GQ Taiwan</h4>
-              <p>男性風格、運動與城市生活。雲端版不存 IG cookie；若公開頁無法確認最新日期，就不把舊貼文寫成今天最新。</p>
+              <p>#GQ封面人物 音樂生涯 40 周年，庾澄慶：「新歌〈愛人啊〉是我對愛的全新理解。」 庾澄慶是華語樂壇裡難以被框架定義的指標人物。少年時曾混跡各大 Live House，從狂躁熱血的搖滾樂開啟創作之路；以〈報告班長〉一曲成為首位嘗試華語饒舌的歌手；還曾受邀至倫敦，參與全球知名的 MTV 音樂頻道的《MTV Unplugged》不插電演唱會，成為華語樂壇第一人…</p>
             </div>
-            <div class="use-case"><strong>可用角度</strong>保留帳號入口，後續可用登入瀏覽器手動補抓最新貼文日期。</div>
-            <a class="source-link ig-post-link" href="https://www.instagram.com/gqtaiwan/" rel="noopener noreferrer">查看帳號</a>
+            <div class="use-case"><strong>可用角度</strong>男性風格、運動與城市生活。形式：輪播。</div>
+            <div class="ig-actions">
+              <a class="source-link ig-post-link" href="https://www.instagram.com/p/DZ9FZOrE1WZ/" rel="noopener noreferrer">查看貼文</a>
+              <a class="source-link secondary-link" href="https://www.instagram.com/gqtaiwan/" rel="noopener noreferrer">查看帳號</a>
+            </div>
+            <div class="card-actions account-feedback">
+              <button class="feedback-button" type="button" data-action="like">喜歡</button>
+              <button class="feedback-button" type="button" data-action="useful">有用</button>
+              <button class="feedback-button" type="button" data-action="post">想做成貼文</button>
+              <button class="feedback-button" type="button" data-action="irrelevant">不相關</button>
+            </div>
           </article>
 
-          <article class="account-card">
+          <article class="account-card" data-id="ig-amouter-life-dzpaupptokm-767993f9">
             <div class="avatar-fallback">AL</div>
             <div>
-              <div class="meta-row"><span class="pill">Instagram</span><span class="pill">雲端公開版</span><span class="pill">需公開驗證</span></div>
+              <div class="meta-row"><span class="pill">Instagram</span><span class="pill">@amouter_life</span><span class="pill">2026/06/16</span><span class="pill">最新貼文較舊</span></div>
               <h4>AMOUTER Life</h4>
-              <p>同行生活線、包款與機能服飾。雲端版不存 IG cookie；若公開頁無法確認最新日期，就不把舊貼文寫成今天最新。</p>
+              <p>. 【正職 / 計時人員 招募中】 台中門市徵才中！ 如果你對戶外生活充滿熱情， 喜歡冒險、喜歡探索， 也願意把這份喜歡分享給更多人 那我們很想認識你！ 一起加入我們吧 🌿 ▍正職｜門市銷售人員 📍工作內容 - 商品介紹與銷售服務 - 顧客服務（電話詢問／調貨／退換貨處理） - 進貨盤點、補貨與庫存管理 - 協助行銷內容產出 📍工作時間 12:30 – 21…</p>
             </div>
-            <div class="use-case"><strong>可用角度</strong>保留帳號入口，後續可用登入瀏覽器手動補抓最新貼文日期。</div>
-            <a class="source-link ig-post-link" href="https://www.instagram.com/amouter_life/" rel="noopener noreferrer">查看帳號</a>
+            <div class="use-case"><strong>可用角度</strong>同行生活線、包款與機能服飾。形式：Reels / 影片。</div>
+            <div class="ig-actions">
+              <a class="source-link ig-post-link" href="https://www.instagram.com/p/DZpauppTOkM/" rel="noopener noreferrer">查看貼文</a>
+              <a class="source-link secondary-link" href="https://www.instagram.com/amouter_life/" rel="noopener noreferrer">查看帳號</a>
+            </div>
+            <div class="card-actions account-feedback">
+              <button class="feedback-button" type="button" data-action="like">喜歡</button>
+              <button class="feedback-button" type="button" data-action="useful">有用</button>
+              <button class="feedback-button" type="button" data-action="post">想做成貼文</button>
+              <button class="feedback-button" type="button" data-action="irrelevant">不相關</button>
+            </div>
           </article>
 
-          <article class="account-card">
+          <article class="account-card" data-id="ig-wrc-taipei-danghxoei4i-540ffb13">
             <div class="avatar-fallback">WT</div>
             <div>
-              <div class="meta-row"><span class="pill">Instagram</span><span class="pill">雲端公開版</span><span class="pill">需公開驗證</span></div>
+              <div class="meta-row"><span class="pill">Instagram</span><span class="pill">@wrc_taipei</span><span class="pill">2026/06/30｜2 天前</span><span class="pill">本週最新貼文</span></div>
               <h4>WRC Taipei</h4>
-              <p>跑團活動與品牌合作。雲端版不存 IG cookie；若公開頁無法確認最新日期，就不把舊貼文寫成今天最新。</p>
+              <p>We are WRC! 誠摯歡迎加入WRC “We can just let July be July.” 就讓七月，成為它原本盛夏的模樣。 週間訓練活動： 7/1進行首次Fartlek Training法特雷特訓練 7/8、7/22進行間歇跑訓練（本月因飛盤隊訓練，移至台大田徑場）7/15進行劍蝦劍10K山路訓練 7/29進行間歇式Tempo訓練8-12K…</p>
             </div>
-            <div class="use-case"><strong>可用角度</strong>保留帳號入口，後續可用登入瀏覽器手動補抓最新貼文日期。</div>
-            <a class="source-link ig-post-link" href="https://www.instagram.com/wrc_taipei/" rel="noopener noreferrer">查看帳號</a>
+            <div class="use-case"><strong>可用角度</strong>跑團活動與品牌合作。形式：輪播。</div>
+            <div class="ig-actions">
+              <a class="source-link ig-post-link" href="https://www.instagram.com/p/DaNghXOEi4i/" rel="noopener noreferrer">查看貼文</a>
+              <a class="source-link secondary-link" href="https://www.instagram.com/wrc_taipei/" rel="noopener noreferrer">查看帳號</a>
+            </div>
+            <div class="card-actions account-feedback">
+              <button class="feedback-button" type="button" data-action="like">喜歡</button>
+              <button class="feedback-button" type="button" data-action="useful">有用</button>
+              <button class="feedback-button" type="button" data-action="post">想做成貼文</button>
+              <button class="feedback-button" type="button" data-action="irrelevant">不相關</button>
+            </div>
           </article>
 
-          <article class="account-card">
+          <article class="account-card" data-id="ig-nnormal-official-dwq6ldrctqx-144b66fa">
             <div class="avatar-fallback">N</div>
             <div>
-              <div class="meta-row"><span class="pill">Instagram</span><span class="pill">雲端公開版</span><span class="pill">需公開驗證</span></div>
+              <div class="meta-row"><span class="pill">Instagram</span><span class="pill">@nnormal_official</span><span class="pill">2026/04/03</span><span class="pill">最新貼文較舊</span></div>
               <h4>NNormal</h4>
-              <p>越野跑鞋與品牌故事。雲端版不存 IG cookie；若公開頁無法確認最新日期，就不把舊貼文寫成今天最新。</p>
+              <p>Cadí was designed to bring more people outdoors. An open invitation to take the first step. In our film series, we follow those who have already done so. Now we head to Hangzhou wi…</p>
             </div>
-            <div class="use-case"><strong>可用角度</strong>保留帳號入口，後續可用登入瀏覽器手動補抓最新貼文日期。</div>
-            <a class="source-link ig-post-link" href="https://www.instagram.com/nnormal_official/" rel="noopener noreferrer">查看帳號</a>
+            <div class="use-case"><strong>可用角度</strong>越野跑鞋與品牌故事。形式：Reels / 影片。</div>
+            <div class="ig-actions">
+              <a class="source-link ig-post-link" href="https://www.instagram.com/p/DWq6lDRCtqx/" rel="noopener noreferrer">查看貼文</a>
+              <a class="source-link secondary-link" href="https://www.instagram.com/nnormal_official/" rel="noopener noreferrer">查看帳號</a>
+            </div>
+            <div class="card-actions account-feedback">
+              <button class="feedback-button" type="button" data-action="like">喜歡</button>
+              <button class="feedback-button" type="button" data-action="useful">有用</button>
+              <button class="feedback-button" type="button" data-action="post">想做成貼文</button>
+              <button class="feedback-button" type="button" data-action="irrelevant">不相關</button>
+            </div>
           </article>
 
-          <article class="account-card">
+          <article class="account-card" data-id="ig-keepon-outdoor-dsh8lcejvrl-1a44dd6c">
             <div class="avatar-fallback">KO</div>
             <div>
-              <div class="meta-row"><span class="pill">Instagram</span><span class="pill">雲端公開版</span><span class="pill">需公開驗證</span></div>
+              <div class="meta-row"><span class="pill">Instagram</span><span class="pill">@keepon.outdoor</span><span class="pill">2025/12/11</span><span class="pill">最新貼文較舊</span></div>
               <h4>Keep On</h4>
-              <p>登山補給、同行活動。雲端版不存 IG cookie；若公開頁無法確認最新日期，就不把舊貼文寫成今天最新。</p>
+              <p>【登山也要懂風水？冬季登山更需要了解！】 #登山注意 01 風‧水 ⟣風寒/水寒效應與失溫⟢ Wind Chill Effect &amp; Cold Water Effect 在山上冷到發抖你知道是為什麼嗎？穿錯衣服也可能會失溫？ 冬季的高山景色美不勝收，但風險意識不足的意外也時有所聞。無論是開車賞雪或是登山活動都可能會面臨失溫風險，了解發生的原因和處置方式，才能…</p>
             </div>
-            <div class="use-case"><strong>可用角度</strong>保留帳號入口，後續可用登入瀏覽器手動補抓最新貼文日期。</div>
-            <a class="source-link ig-post-link" href="https://www.instagram.com/keepon.outdoor/" rel="noopener noreferrer">查看帳號</a>
+            <div class="use-case"><strong>可用角度</strong>登山補給、同行活動。形式：輪播。</div>
+            <div class="ig-actions">
+              <a class="source-link ig-post-link" href="https://www.instagram.com/p/DSH8LcejVrl/" rel="noopener noreferrer">查看貼文</a>
+              <a class="source-link secondary-link" href="https://www.instagram.com/keepon.outdoor/" rel="noopener noreferrer">查看帳號</a>
+            </div>
+            <div class="card-actions account-feedback">
+              <button class="feedback-button" type="button" data-action="like">喜歡</button>
+              <button class="feedback-button" type="button" data-action="useful">有用</button>
+              <button class="feedback-button" type="button" data-action="post">想做成貼文</button>
+              <button class="feedback-button" type="button" data-action="irrelevant">不相關</button>
+            </div>
           </article>
 
-          <article class="account-card">
+          <article class="account-card" data-id="ig-rockland-taiwan-dzu2l-7ifeg-e386d706">
             <div class="avatar-fallback">R</div>
             <div>
-              <div class="meta-row"><span class="pill">Instagram</span><span class="pill">雲端公開版</span><span class="pill">需公開驗證</span></div>
+              <div class="meta-row"><span class="pill">Instagram</span><span class="pill">@rockland_taiwan</span><span class="pill">2026/06/08</span><span class="pill">最新貼文較舊</span></div>
               <h4>ROCKLAND</h4>
-              <p>登山旅遊、裝備建議。雲端版不存 IG cookie；若公開頁無法確認最新日期，就不把舊貼文寫成今天最新。</p>
+              <p>｜去山上吧！ROCKLAND x 雄獅 富士山健行旅團 ​ 日本第一高峰、海拔 3,776 米高的富士山， 每年 7 月至 9 月初攀登季節限定的山岳御來光， 該怎麼準備？海拔高與碎石坡地形好走嗎？ 海外和國內健行的差異與自己裝備該怎麼搭配？ 以上的問題，今年 8 月我們有不一樣的玩法！ ​ ROCKLAND 與深耕旅遊多年的雄獅旅遊合作， 8 月份的富士山…</p>
             </div>
-            <div class="use-case"><strong>可用角度</strong>保留帳號入口，後續可用登入瀏覽器手動補抓最新貼文日期。</div>
-            <a class="source-link ig-post-link" href="https://www.instagram.com/rockland_taiwan/" rel="noopener noreferrer">查看帳號</a>
+            <div class="use-case"><strong>可用角度</strong>登山旅遊、裝備建議。形式：輪播。</div>
+            <div class="ig-actions">
+              <a class="source-link ig-post-link" href="https://www.instagram.com/p/DZU2l-7ifeG/" rel="noopener noreferrer">查看貼文</a>
+              <a class="source-link secondary-link" href="https://www.instagram.com/rockland_taiwan/" rel="noopener noreferrer">查看帳號</a>
+            </div>
+            <div class="card-actions account-feedback">
+              <button class="feedback-button" type="button" data-action="like">喜歡</button>
+              <button class="feedback-button" type="button" data-action="useful">有用</button>
+              <button class="feedback-button" type="button" data-action="post">想做成貼文</button>
+              <button class="feedback-button" type="button" data-action="irrelevant">不相關</button>
+            </div>
           </article>
 
-          <article class="account-card">
+          <article class="account-card" data-id="ig-cliff-coaching-system-dwxq-7de-v0-28288c8f">
             <div class="avatar-fallback">CC</div>
             <div>
-              <div class="meta-row"><span class="pill">Instagram</span><span class="pill">雲端公開版</span><span class="pill">需公開驗證</span></div>
+              <div class="meta-row"><span class="pill">Instagram</span><span class="pill">@cliff_coaching_system</span><span class="pill">2026/04/06</span><span class="pill">最新貼文較舊</span></div>
               <h4>Cliff Coaching</h4>
-              <p>越野跑訓練。雲端版不存 IG cookie；若公開頁無法確認最新日期，就不把舊貼文寫成今天最新。</p>
+              <p>CCS Trail HUB - 一個開放式的越野跑訓練社群！ 這是我一直很想做的事情，創造一個教練、學員、愛好者，可以自由交流訓練的社群，不分品牌、無論是否為競品（在CCS的精神裡，也沒有競品問題，教練們都是一起成長、合作、共同成長） 在CCS Trail HUB 的Line社群裡 我們固定會做的，是一個月至少1次的「積極之約」，內容與越野跑的相關學習有關，…</p>
             </div>
-            <div class="use-case"><strong>可用角度</strong>保留帳號入口，後續可用登入瀏覽器手動補抓最新貼文日期。</div>
-            <a class="source-link ig-post-link" href="https://www.instagram.com/cliff_coaching_system/" rel="noopener noreferrer">查看帳號</a>
+            <div class="use-case"><strong>可用角度</strong>越野跑訓練。形式：照片。</div>
+            <div class="ig-actions">
+              <a class="source-link ig-post-link" href="https://www.instagram.com/p/DWxq-7dE-V0/" rel="noopener noreferrer">查看貼文</a>
+              <a class="source-link secondary-link" href="https://www.instagram.com/cliff_coaching_system/" rel="noopener noreferrer">查看帳號</a>
+            </div>
+            <div class="card-actions account-feedback">
+              <button class="feedback-button" type="button" data-action="like">喜歡</button>
+              <button class="feedback-button" type="button" data-action="useful">有用</button>
+              <button class="feedback-button" type="button" data-action="post">想做成貼文</button>
+              <button class="feedback-button" type="button" data-action="irrelevant">不相關</button>
+            </div>
           </article>
 
-          <article class="account-card">
+          <article class="account-card" data-id="ig-blackwater-rc-daiwzlwmwih-d12a2fdf">
             <div class="avatar-fallback">BR</div>
             <div>
-              <div class="meta-row"><span class="pill">Instagram</span><span class="pill">雲端公開版</span><span class="pill">需公開驗證</span></div>
+              <div class="meta-row"><span class="pill">Instagram</span><span class="pill">@blackwater.rc</span><span class="pill">2026/06/28｜4 天前</span><span class="pill">本週最新貼文</span></div>
               <h4>Blackwater RC</h4>
-              <p>跑團與恢復訓練。雲端版不存 IG cookie；若公開頁無法確認最新日期，就不把舊貼文寫成今天最新。</p>
+              <p>Running is only part of the practice. 跑步只是練習的一環 Some weeks call for restraint. Others ask for speed, distance, or recovery. Progress comes from knowing when each belongs. July’s pr…</p>
             </div>
-            <div class="use-case"><strong>可用角度</strong>保留帳號入口，後續可用登入瀏覽器手動補抓最新貼文日期。</div>
-            <a class="source-link ig-post-link" href="https://www.instagram.com/blackwater.rc/" rel="noopener noreferrer">查看帳號</a>
+            <div class="use-case"><strong>可用角度</strong>跑團與恢復訓練。形式：輪播。</div>
+            <div class="ig-actions">
+              <a class="source-link ig-post-link" href="https://www.instagram.com/p/DaIWZlWmWiH/" rel="noopener noreferrer">查看貼文</a>
+              <a class="source-link secondary-link" href="https://www.instagram.com/blackwater.rc/" rel="noopener noreferrer">查看帳號</a>
+            </div>
+            <div class="card-actions account-feedback">
+              <button class="feedback-button" type="button" data-action="like">喜歡</button>
+              <button class="feedback-button" type="button" data-action="useful">有用</button>
+              <button class="feedback-button" type="button" data-action="post">想做成貼文</button>
+              <button class="feedback-button" type="button" data-action="irrelevant">不相關</button>
+            </div>
           </article>
 
-          <article class="account-card">
+          <article class="account-card" data-id="ig-beams-taiwan-dztonmbjsm9-5a5c96f7">
             <div class="avatar-fallback">BT</div>
             <div>
-              <div class="meta-row"><span class="pill">Instagram</span><span class="pill">雲端公開版</span><span class="pill">需公開驗證</span></div>
+              <div class="meta-row"><span class="pill">Instagram</span><span class="pill">@beams_taiwan</span><span class="pill">2026/06/18</span><span class="pill">最新貼文較舊</span></div>
               <h4>BEAMS Taiwan</h4>
-              <p>城市風格、鞋款與機能材質。雲端版不存 IG cookie；若公開頁無法確認最新日期，就不把舊貼文寫成今天最新。</p>
+              <p>＼🐆 PUMA × Ray BEAMS ⚽️✨／ 〈PUMA〉經典檔案鞋款「V-S1」以〈Ray BEAMS〉別注版本重新復刻登場。 @pumajapan @puma @ray_beams_official 全球運動品牌〈PUMA〉攜手〈Ray BEAMS〉推出全新別注系列，作為 BEAMS 創業 50 週年紀念企劃之一，將經典足球元素與現代時尚風格重新結合…</p>
             </div>
-            <div class="use-case"><strong>可用角度</strong>保留帳號入口，後續可用登入瀏覽器手動補抓最新貼文日期。</div>
-            <a class="source-link ig-post-link" href="https://www.instagram.com/beams_taiwan/" rel="noopener noreferrer">查看帳號</a>
+            <div class="use-case"><strong>可用角度</strong>城市風格、鞋款與機能材質。形式：輪播。</div>
+            <div class="ig-actions">
+              <a class="source-link ig-post-link" href="https://www.instagram.com/p/DZtonmbjSM9/" rel="noopener noreferrer">查看貼文</a>
+              <a class="source-link secondary-link" href="https://www.instagram.com/beams_taiwan/" rel="noopener noreferrer">查看帳號</a>
+            </div>
+            <div class="card-actions account-feedback">
+              <button class="feedback-button" type="button" data-action="like">喜歡</button>
+              <button class="feedback-button" type="button" data-action="useful">有用</button>
+              <button class="feedback-button" type="button" data-action="post">想做成貼文</button>
+              <button class="feedback-button" type="button" data-action="irrelevant">不相關</button>
+            </div>
           </article>
 
-          <article class="account-card">
+          <article class="account-card" data-id="ig-montreal-athletes-club-dansnyujuub-25c88c66">
             <div class="avatar-fallback">MR</div>
             <div>
-              <div class="meta-row"><span class="pill">Instagram</span><span class="pill">雲端公開版</span><span class="pill">需公開驗證</span></div>
+              <div class="meta-row"><span class="pill">Instagram</span><span class="pill">@montreal.athletes.club</span><span class="pill">2026/06/30｜2 天前</span><span class="pill">本週最新貼文</span></div>
               <h4>MAC RUN CLUB</h4>
-              <p>跑團與鞋款合作。雲端版不存 IG cookie；若公開頁無法確認最新日期，就不把舊貼文寫成今天最新。</p>
+              <p>【 Push Your Comfort Zone｜SAUCONY TRIUMPH 24 】 全新TRIUMPH 24正式上市，感受極致舒適與輕盈的跑步體驗。 革命性 incrediLUX 中底締造輕量緩震跑鞋新標準。 ✅全新中底： incrediLUX 兼顧輕量化的同時，大幅提升緩震性能與能量回饋，實現體積和重量的完美平衡。 ✅極致輕量：鞋款僅250克（男子…</p>
             </div>
-            <div class="use-case"><strong>可用角度</strong>保留帳號入口，後續可用登入瀏覽器手動補抓最新貼文日期。</div>
-            <a class="source-link ig-post-link" href="https://www.instagram.com/montreal.athletes.club/" rel="noopener noreferrer">查看帳號</a>
+            <div class="use-case"><strong>可用角度</strong>跑團與鞋款合作。形式：輪播。</div>
+            <div class="ig-actions">
+              <a class="source-link ig-post-link" href="https://www.instagram.com/p/DaNSNYujUUB/" rel="noopener noreferrer">查看貼文</a>
+              <a class="source-link secondary-link" href="https://www.instagram.com/montreal.athletes.club/" rel="noopener noreferrer">查看帳號</a>
+            </div>
+            <div class="card-actions account-feedback">
+              <button class="feedback-button" type="button" data-action="like">喜歡</button>
+              <button class="feedback-button" type="button" data-action="useful">有用</button>
+              <button class="feedback-button" type="button" data-action="post">想做成貼文</button>
+              <button class="feedback-button" type="button" data-action="irrelevant">不相關</button>
+            </div>
           </article>
 
-          <article class="account-card">
+          <article class="account-card" data-id="ig-goopi-co-dudnulne3of-40df4b81">
             <div class="avatar-fallback">G</div>
             <div>
-              <div class="meta-row"><span class="pill">Instagram</span><span class="pill">雲端公開版</span><span class="pill">需公開驗證</span></div>
+              <div class="meta-row"><span class="pill">Instagram</span><span class="pill">@goopi.co</span><span class="pill">2026/01/28</span><span class="pill">最新貼文較舊</span></div>
               <h4>GOOPi</h4>
-              <p>機能服飾、生活風格。雲端版不存 IG cookie；若公開頁無法確認最新日期，就不把舊貼文寫成今天最新。</p>
+              <p>🗝️ GOOPiMADE | Mizuno Special Edition - WAVE MUJIN TL GPM 將於 “圭崗 渡孤” 率先全球展售 Collaboration Exhibition &amp; Global Premiere www.GOOPi.co</p>
             </div>
-            <div class="use-case"><strong>可用角度</strong>保留帳號入口，後續可用登入瀏覽器手動補抓最新貼文日期。</div>
-            <a class="source-link ig-post-link" href="https://www.instagram.com/goopi.co/" rel="noopener noreferrer">查看帳號</a>
+            <div class="use-case"><strong>可用角度</strong>機能服飾、生活風格。形式：照片。</div>
+            <div class="ig-actions">
+              <a class="source-link ig-post-link" href="https://www.instagram.com/p/DUDNUlNE3oF/" rel="noopener noreferrer">查看貼文</a>
+              <a class="source-link secondary-link" href="https://www.instagram.com/goopi.co/" rel="noopener noreferrer">查看帳號</a>
+            </div>
+            <div class="card-actions account-feedback">
+              <button class="feedback-button" type="button" data-action="like">喜歡</button>
+              <button class="feedback-button" type="button" data-action="useful">有用</button>
+              <button class="feedback-button" type="button" data-action="post">想做成貼文</button>
+              <button class="feedback-button" type="button" data-action="irrelevant">不相關</button>
+            </div>
           </article>
         </div>
       </section>
